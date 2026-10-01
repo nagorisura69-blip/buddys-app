@@ -1,0 +1,20 @@
+name: Sign APK
+on: workflow_dispatch
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sign the APK
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          APK=$(ls *unsigned*.apk | head -1)
+          cp "$APK" in.apk
+          "$BT/zipalign" -p -f 4 in.apk aligned.apk
+          keytool -genkeypair -keystore buddy.keystore -storepass buddy1234 -keypass buddy1234 -alias buddy -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Buddys App"
+          "$BT/apksigner" sign --ks buddy.keystore --ks-pass pass:buddy1234 --key-pass pass:buddy1234 --out Buddys-App-signed.apk aligned.apk
+          "$BT/apksigner" verify -v Buddys-App-signed.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-apk
+          path: Buddys-App-signed.apk
