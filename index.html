@@ -1,412 +1,248 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <title>Buddy's App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#15112e">
+<meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Buddy's">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#15112e;--bg2:#1d1840;--card:#262052;--line:#352d6b;--txt:#f4f1ff;--mut:#a79fd6;--violet:#8b6cff;--pink:#ff7eb6;--mint:#5df2c4;--amber:#ffc15e;--cyan:#62f5ff;--red:#ff6b6b}
+:root{--bg:#f3f4fa;--surf:#fff;--surf2:#eceef6;--txt:#171a2c;--mut:#6c7491;--line:#e4e7f1;--pri:#ff4f86;--pri2:#ff8a5c;--ok:#12c79a;--them:#fff;--chatbg:#e9ecf6;--me:linear-gradient(135deg,#ff8a5c,#ff4f86);--sh:0 2px 12px rgba(40,50,100,.08);--ov:rgba(10,12,25,.55)}
+:root[data-theme=dark]{--bg:#0d0f16;--surf:#161923;--surf2:#1e2230;--txt:#f1f3fb;--mut:#8991ac;--line:#252a3a;--them:#212636;--chatbg:#0d0f16;--sh:none;--ov:rgba(0,0,0,.65)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Nunito',system-ui,-apple-system,sans-serif;overscroll-behavior:none}
-h1,h2,h3,.brand b{font-family:'Baloo 2','Nunito',system-ui,sans-serif}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Nunito',system-ui,-apple-system,Segoe UI,sans-serif;overscroll-behavior:none;overflow:hidden}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
-input,textarea{font:inherit;color:inherit}
+input,textarea{font:inherit;color:inherit;border:0;outline:0;background:none}
 .hidden{display:none!important}
-#app{height:100dvh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);overflow:hidden}
-/* center screens */
-.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;gap:14px;background:radial-gradient(circle at 20% 10%,#3a2a82 0,transparent 45%),radial-gradient(circle at 90% 90%,#7a2b66 0,transparent 40%),var(--bg)}
-.center h1{font-size:34px;line-height:1.1}
-.center p{color:var(--mut);max-width:290px;line-height:1.45}
-.big{font-size:56px}
-.gbtn{display:flex;align-items:center;gap:12px;background:#fff;color:#222;font-weight:700;padding:14px 22px;border-radius:30px;margin-top:10px;box-shadow:0 8px 24px #0006}
-.btn{background:linear-gradient(135deg,var(--violet),#a35cff);padding:12px 22px;border-radius:24px;font-weight:700}
-.btn.alt{background:var(--card);border:1px solid var(--line)}
-.btn.sm{padding:8px 14px;font-size:14px;border-radius:18px}
-.btn.ok{background:linear-gradient(135deg,#2fd6a1,#5df2c4);color:#0b2a22}
-.btn.no{background:#4a2040;color:#ffb3c7}
-.note{font-size:13px;color:var(--amber)}
-/* top + nav */
-.top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px}
-.brand b{font-size:22px}
-.ic{width:40px;height:40px;border-radius:50%;font-size:20px;display:grid;place-items:center}
-.ic:active{background:var(--card)}
-.body{flex:1;overflow-y:auto;padding:12px 14px}
-.nav{display:flex;background:var(--bg2);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.nav button{flex:1;padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--mut);position:relative}
-.nav button span.e{font-size:22px}
-.nav button.on{color:var(--txt)}
-.nav button.on span.e{filter:drop-shadow(0 0 8px var(--violet))}
-.dotb{position:absolute;top:4px;left:calc(50% + 8px);background:var(--pink);color:#fff;border-radius:10px;min-width:18px;height:18px;font-size:11px;display:grid;place-items:center;padding:0 5px;font-weight:700}
-/* list */
-.item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:16px;width:100%;text-align:left}
-.item:active{background:var(--card)}
-.av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--pink));display:grid;place-items:center;font-weight:700;font-size:20px;position:relative;flex:none;overflow:hidden}
-.av img{width:100%;height:100%;object-fit:cover}
-.av.sm{width:40px;height:40px;font-size:17px}
-.on-dot{position:absolute;right:0;bottom:0;width:13px;height:13px;border-radius:50%;background:var(--mint);border:2px solid var(--bg)}
+svg{flex:none;display:block}
+#app{height:100dvh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);position:relative}
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surf);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.3px}
+.brand span{background:var(--me);-webkit-background-clip:text;background-clip:text;color:transparent}
+.topr{display:flex;align-items:center;gap:4px}
+.ib{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:var(--txt)}
+.ib:active{background:var(--surf2)}
+.body{flex:1;overflow-y:auto;padding:8px 0 14px;-webkit-overflow-scrolling:touch}
+.nav{display:flex;background:var(--surf);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav button{flex:1;padding:9px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--mut);position:relative}
+.nav button.on{color:var(--pri)}
+.nav .pill{position:absolute;top:3px;left:calc(50% + 6px);background:var(--pri);color:#fff;border-radius:9px;min-width:17px;height:17px;font-size:10.5px;display:grid;place-items:center;padding:0 4px}
+.av{border-radius:50%;background:linear-gradient(135deg,#ff8a5c,#ff4f86);display:grid;place-items:center;font-weight:800;color:#fff;position:relative;flex:none;overflow:visible}
+.av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.av .od{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:var(--ok);border:2.5px solid var(--surf)}
+.item{display:flex;align-items:center;gap:13px;padding:10px 16px;width:100%;text-align:left}
+.item:active{background:var(--surf2)}
 .mid{flex:1;min-width:0}
-.mid b{display:block;font-size:16px}
-.mid small{display:block;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px}
-.rt{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:12px;color:var(--mut)}
-.badge{background:var(--mint);color:#06231b;border-radius:10px;min-width:20px;height:20px;display:grid;place-items:center;font-size:12px;font-weight:700;padding:0 6px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
-.card .row{display:flex;align-items:center;gap:12px}
-.card .acts{display:flex;gap:10px;margin-top:12px}
-.card .acts .btn{flex:1}
-.empty{text-align:center;color:var(--mut);padding:50px 20px;line-height:1.6}
-.empty .big{display:block;margin-bottom:8px}
-.sec{color:var(--mut);font-size:13px;font-weight:700;margin:14px 4px 8px}
-.inp{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;outline:none}
-.inp:focus{border-color:var(--violet)}
-.link{color:var(--mut);text-decoration:underline;font-size:14px;margin-top:14px}
-code.l{display:block;word-break:break-all;background:var(--bg);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--mint);margin:8px 0}
+.mid b{display:block;font-size:16px;font-weight:700}
+.mid small{display:flex;align-items:center;gap:4px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.5px;margin-top:2px}
+.mid small.ty{color:var(--ok);font-weight:700}
+.rt{display:flex;flex-direction:column;align-items:flex-end;gap:5px;font-size:11.5px;color:var(--mut)}
+.badge{background:var(--pri);color:#fff;border-radius:11px;min-width:21px;height:21px;display:grid;place-items:center;font-size:12px;font-weight:800;padding:0 6px}
+.empty{text-align:center;color:var(--mut);padding:60px 30px;line-height:1.6}
+.empty .em{font-size:52px;margin-bottom:6px}
+.sec{color:var(--mut);font-size:12.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin:16px 18px 6px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:14px;margin:8px 14px;box-shadow:var(--sh)}
+.btn{background:var(--me);color:#fff;padding:12px 22px;border-radius:26px;font-weight:800;box-shadow:0 6px 16px rgba(255,79,134,.28)}
+.btn.alt{background:var(--surf2);color:var(--txt);box-shadow:none}
+.btn.sm{padding:8px 15px;font-size:13.5px;border-radius:18px}
+.btn.ok{background:linear-gradient(135deg,#12c79a,#3ee6b8);box-shadow:none}
+.btn.no{background:#ffe3ea;color:#d6305f;box-shadow:none}
+:root[data-theme=dark] .btn.no{background:#3a2030;color:#ff8fae}
+.row2{display:flex;gap:10px;margin-top:12px}.row2>*{flex:1}
+.inp{width:100%;background:var(--surf2);border-radius:14px;padding:12px 14px}
+.search{margin:6px 14px 8px;display:flex;align-items:center;gap:9px;background:var(--surf2);border-radius:22px;padding:0 14px;color:var(--mut)}
+.search input{flex:1;padding:11px 0}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:14px;background:radial-gradient(circle at 15% 8%,rgba(255,138,92,.28) 0,transparent 42%),radial-gradient(circle at 90% 92%,rgba(255,79,134,.25) 0,transparent 45%),var(--bg)}
+.center h1{font-size:34px;font-weight:800;letter-spacing:-.5px}
+.center p{color:var(--mut);max-width:290px;line-height:1.5}
+.gbtn{display:flex;align-items:center;gap:12px;background:#fff;color:#222;font-weight:800;padding:14px 24px;border-radius:30px;margin-top:8px;box-shadow:0 8px 26px rgba(30,40,90,.18)}
+.note{font-size:13px;color:var(--mut)}
 /* chat */
-.chat{flex:1;display:flex;flex-direction:column;min-height:0}
-.chead{display:flex;align-items:center;gap:8px;padding:8px 8px;background:var(--bg2);border-bottom:1px solid var(--line)}
-.chead .who{flex:1;min-width:0}
-.chead .who b{display:block;font-size:17px;line-height:1.1}
-.chead .who small{color:var(--mint);font-size:12px}
-.chead .who small.off{color:var(--mut)}
-.msgs{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:3px;background-color:#1a1440}
-.day{align-self:center;background:#0006;color:var(--mut);font-size:12px;padding:3px 12px;border-radius:12px;margin:10px 0 6px}
-.row{display:flex}
-.row.me{justify-content:flex-end}
-.bub{max-width:80%;padding:7px 10px 5px;border-radius:18px;background:#2d2760;position:relative;word-wrap:break-word;overflow-wrap:anywhere;box-shadow:0 1px 2px #0004}
-.me .bub{background:linear-gradient(135deg,#7a5cff,#9a5cf0);border-bottom-right-radius:5px}
-.row:not(.me) .bub{border-bottom-left-radius:5px}
-.bub .t{font-size:16px;line-height:1.35}
-.meta{display:flex;justify-content:flex-end;gap:4px;font-size:11px;color:#ffffffa8;margin-top:2px}
-.tk{letter-spacing:-3px;font-size:12px;color:#ffffffa8}
-.tk.r{color:var(--cyan);font-weight:700}
-.med{display:block;max-width:100%;max-height:300px;border-radius:12px;margin-bottom:2px;background:#0004;min-width:140px;min-height:90px}
-audio{height:40px;max-width:230px}
-.once{display:flex;align-items:center;gap:8px;background:#0004;border-radius:14px;padding:12px 14px;font-weight:700;font-size:15px}
-.once.done{opacity:.6;font-weight:600}
-.composer{display:flex;align-items:flex-end;gap:6px;padding:8px;background:var(--bg2);border-top:1px solid var(--line);padding-bottom:calc(8px + env(safe-area-inset-bottom))}
-.composer textarea{flex:1;background:var(--card);border:0;border-radius:22px;padding:11px 14px;outline:none;resize:none;max-height:110px;line-height:1.3}
-.cbtn{width:42px;height:42px;border-radius:50%;font-size:22px;display:grid;place-items:center;flex:none}
-.cbtn.send{background:linear-gradient(135deg,var(--violet),var(--pink))}
-.emojip{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;max-height:230px;overflow-y:auto;background:var(--bg2);border-top:1px solid var(--line);padding:6px}
-.emojip button{font-size:26px;padding:6px 0;border-radius:10px}
-.emojip button:active{background:var(--card)}
-.rec{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg2);border-top:1px solid var(--line)}
-.rec .pulse{width:12px;height:12px;border-radius:50%;background:var(--red);animation:pl 1s infinite}
-@keyframes pl{50%{opacity:.25}}
-.rec .tm{flex:1;font-weight:700}
-/* sheets */
-.sheetbg{position:fixed;inset:0;background:#000a;z-index:50;display:flex;align-items:flex-end}
-.sheet{width:100%;background:var(--bg2);border-radius:24px 24px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:6px}
-.sheet button{padding:15px;text-align:left;border-radius:14px;font-size:16px;font-weight:600}
-.sheet button:active{background:var(--card)}
-/* viewer */
-#viewer{position:fixed;inset:0;background:#000;z-index:60;display:flex;align-items:center;justify-content:center}
-#viewer img,#viewer video{max-width:100%;max-height:100%}
-#viewer .x{position:absolute;top:calc(12px + env(safe-area-inset-top));right:14px;width:44px;height:44px;border-radius:50%;background:#0008;font-size:22px}
-#viewer .tag{position:absolute;bottom:calc(20px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:var(--amber);font-size:13px}
+.chead{display:flex;align-items:center;gap:4px;padding:6px 6px 6px 2px;background:var(--surf);border-bottom:1px solid var(--line)}
+.chp{flex:1;display:flex;align-items:center;gap:10px;min-width:0;text-align:left}
+.who{min-width:0}.who b{display:block;font-size:16.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small{display:block;font-size:12.5px;color:var(--mut);height:16px}.who small.on{color:var(--ok);font-weight:700}
+.msgs{flex:1;overflow-y:auto;padding:8px 10px 10px;background-color:var(--chatbg);-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.mrow{display:flex;flex-direction:column}
+.mrow.hl .bub{outline:3px solid var(--acc,#ffc93c);outline-offset:2px}
+.dayhdr{align-self:center;background:var(--surf);color:var(--mut);font-size:12px;font-weight:700;padding:4px 13px;border-radius:12px;margin:12px 0 8px;box-shadow:var(--sh)}
+.line{display:flex;margin:1.5px 0;position:relative}.line.me{justify-content:flex-end}
+.bub{max-width:82%;padding:7px 10px 4px;border-radius:17px;background:var(--them);box-shadow:0 1px 2px rgba(20,30,70,.1);position:relative;overflow-wrap:anywhere;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:transform .12s}
+.me .bub{background:var(--me);color:#fff;border-bottom-right-radius:5px}
+.line:not(.me) .bub{border-bottom-left-radius:5px}
+.bub.nobg{background:none;box-shadow:none;padding:2px 4px}.me .bub.nobg{color:inherit}
+.bub.del{opacity:.75;font-size:14px}
+.t{font-size:16px;line-height:1.38;white-space:pre-wrap}.t a{color:inherit;text-decoration:underline}
+.big{font-size:44px;line-height:1.1}
+.meta{display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:10.5px;opacity:.72;margin-top:1px}
+.tk{display:inline-flex;align-items:center}.tk.r{color:#8ef4ff;opacity:1}
+.me .meta{color:#fff}
+.med{display:block;max-width:100%;width:230px;max-height:300px;object-fit:cover;border-radius:12px;margin-bottom:3px;background:rgba(0,0,0,.12);min-height:110px}
+.vwrap{position:relative;width:230px;max-width:100%}.vwrap video{width:100%;max-height:300px;object-fit:cover;border-radius:12px;background:#000;display:block;min-height:120px}
+.vwrap .pl{position:absolute;inset:0;display:grid;place-items:center}.vwrap .pl i{width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.5);display:grid;place-items:center;color:#fff}
+.cap{margin:3px 2px 2px;font-size:15px}
+.once{display:flex;align-items:center;gap:9px;padding:10px 6px;font-weight:700;font-size:14.5px}
+.once .oc{width:30px;height:30px;border-radius:50%;border:2px dashed currentColor;display:grid;place-items:center;font-size:13px}
+.once.done{opacity:.6}
+.vp{display:flex;align-items:center;gap:10px;min-width:210px;padding:2px 0}
+.vpb{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.28);display:grid;place-items:center;flex:none}
+.line:not(.me) .vpb{background:var(--surf2)}
+.vpt{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.35);overflow:hidden}.line:not(.me) .vpt{background:var(--surf2)}
+.vpt i{display:block;height:100%;width:0;background:currentColor;border-radius:3px}
+.vpd{font-size:12px;min-width:32px;opacity:.85}
+.stk{width:150px;border-radius:22px;padding:14px 10px 12px;text-align:center;color:#fff}
+.stk .se{display:block;font-size:64px;line-height:1.1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.2))}.stk b{font-weight:800;font-size:17px;display:block;margin-top:2px;letter-spacing:.2px}
+.s-a{background:linear-gradient(135deg,#ff9a8b,#ff4f86)}.s-b{background:linear-gradient(135deg,#7f7fff,#45c4ff)}.s-c{background:linear-gradient(135deg,#ffb347,#ff7a45)}.s-d{background:linear-gradient(135deg,#12c79a,#6be8a3)}.s-e{background:linear-gradient(135deg,#a56cff,#ff7ad9)}.s-f{background:linear-gradient(135deg,#f6d365,#fda085)}
+.rq{border-left:4px solid var(--pri);background:rgba(0,0,0,.07);border-radius:9px;padding:5px 9px;margin-bottom:5px;font-size:13px;max-width:100%}
+.me .rq{border-left-color:#fff;background:rgba(255,255,255,.2)}
+.rq b{display:block;font-size:12.5px}.rq span{display:block;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.rx{display:flex;gap:4px;margin:-6px 8px 4px;flex-wrap:wrap}.line.me+.rx{justify-content:flex-end}
+.rxc{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:1px 7px;font-size:13px;box-shadow:var(--sh)}
+.rxc.mine{border-color:var(--pri);background:rgba(255,79,134,.12)}
+.comp{display:flex;align-items:flex-end;gap:8px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:var(--chatbg)}
+.cin{flex:1;display:flex;align-items:flex-end;background:var(--surf);border-radius:24px;box-shadow:var(--sh);min-width:0}
+.cin textarea{flex:1;padding:12px 2px;max-height:110px;resize:none;line-height:1.3;min-width:0}
+.cin .ib{width:40px;height:44px;border-radius:0;color:var(--mut)}
+.fab{width:46px;height:46px;border-radius:50%;background:var(--me);color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 5px 14px rgba(255,79,134,.35)}
+.rbar{display:flex;align-items:center;gap:10px;background:var(--surf);padding:8px 14px;border-top:1px solid var(--line)}
+.rbar .rq{flex:1;margin:0;background:var(--surf2)}
+.recbar{display:flex;align-items:center;gap:10px;padding:7px 10px calc(7px + env(safe-area-inset-bottom));background:var(--surf)}
+.rdot{width:11px;height:11px;border-radius:50%;background:#ff3b5c;animation:bl 1s infinite}@keyframes bl{50%{opacity:.2}}
+.wave{flex:1;display:flex;align-items:center;gap:3px;height:30px}.wave i{width:3px;border-radius:2px;background:var(--pri);animation:wv 1s infinite ease-in-out}
+@keyframes wv{0%,100%{height:5px}50%{height:24px}}
+.blockbar{padding:14px;text-align:center;background:var(--surf);color:var(--mut);font-size:14px}
+.panel{display:none;background:var(--surf);border-top:1px solid var(--line);height:300px;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.panel.open{display:flex}
+.ptabs{display:flex;border-bottom:1px solid var(--line)}.ptabs button{flex:1;padding:10px;font-weight:800;font-size:13.5px;color:var(--mut)}.ptabs button.on{color:var(--pri);box-shadow:inset 0 -3px 0 var(--pri)}
+.pbody{flex:1;overflow-y:auto;padding:8px}
+.eg{display:grid;grid-template-columns:repeat(8,1fr);gap:2px}.eg button{font-size:25px;padding:6px 0;border-radius:10px}.eg button:active{background:var(--surf2)}
+.egh{font-size:12px;font-weight:800;color:var(--mut);margin:8px 4px 4px;text-transform:uppercase}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sg .stk{width:100%;padding:8px 4px;border-radius:16px}.sg .stk .se{font-size:40px}.sg .stk b{font-size:12.5px}
+.gg{columns:3;gap:6px}.gg img{width:100%;border-radius:10px;margin-bottom:6px;display:block;background:var(--surf2)}
+/* overlays */
+.sheetbg{position:fixed;inset:0;background:var(--ov);z-index:50;display:flex;align-items:flex-end}
+.sheet{width:100%;background:var(--surf);border-radius:24px 24px 0 0;padding:10px 10px calc(12px + env(safe-area-inset-bottom));max-height:86dvh;overflow-y:auto;animation:up .18s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.sheet:before{content:'';display:block;width:38px;height:4px;border-radius:2px;background:var(--line);margin:2px auto 10px}
+.si{display:flex;align-items:center;gap:15px;width:100%;padding:14px 12px;border-radius:14px;font-weight:700;font-size:15.5px;text-align:left}
+.si:active{background:var(--surf2)}.si.danger{color:#e5365f}
+.rxrow{display:flex;justify-content:space-around;background:var(--surf2);border-radius:30px;padding:4px;margin:2px 4px 8px}
+.rxrow button{font-size:27px;width:46px;height:46px;border-radius:50%}.rxrow button:active{background:var(--surf)}
+.modal{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+.viewer{position:fixed;inset:0;z-index:70;background:#000;display:flex;align-items:center;justify-content:center;color:#fff}
+.viewer img,.viewer video{max-width:100%;max-height:100%;touch-action:pinch-zoom}
+.vtop{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:calc(8px + env(safe-area-inset-top)) 8px 20px;background:linear-gradient(#000a,transparent);z-index:2}
+.vtop .ib{color:#fff}.vtop span{font-weight:700}.vcap{position:absolute;bottom:0;left:0;right:0;padding:30px 18px calc(18px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#000b);text-align:center}
+.pv{flex:1;display:flex;align-items:center;justify-content:center;background:#000;min-height:0}.pv img,.pv video{max-width:100%;max-height:100%}
+.pvb{display:flex;align-items:center;gap:8px;padding:10px 10px calc(10px + env(safe-area-inset-bottom));background:var(--surf)}.pvb .inp{flex:1}
+.once-t{display:flex;align-items:center;gap:6px;font-weight:800;font-size:13px;padding:8px 12px;border-radius:20px;background:var(--surf2);color:var(--mut)}.once-t.on{background:var(--pri);color:#fff}
+.searchov{position:absolute;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column}
+.sres{flex:1;overflow-y:auto}.sres .item small{white-space:normal}.sres mark{background:#ffe07a;color:#222;border-radius:3px}
+/* status */
+.ring{padding:3px;border-radius:50%;background:conic-gradient(#ff8a5c,#ff4f86,#ffc93c,#ff8a5c)}.ring.seen{background:var(--line)}.ring>div{background:var(--surf);padding:2px;border-radius:50%}
+.sv{position:fixed;inset:0;z-index:70;background:#111;color:#fff;display:flex;flex-direction:column}
+.sv .bars{display:flex;gap:4px;padding:calc(10px + env(safe-area-inset-top)) 10px 6px}.sv .bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.3);overflow:hidden}.sv .bars i b{display:block;height:100%;width:0;background:#fff}
+.sv .sc{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0}.sv .sc img,.sv .sc video{max-width:100%;max-height:100%}
+.sv .st{font-size:28px;font-weight:800;text-align:center;padding:30px;line-height:1.3}
+.sv .sh{display:flex;align-items:center;gap:10px;padding:4px 12px}.sv .sf{padding:10px 16px calc(14px + env(safe-area-inset-bottom));text-align:center;font-size:14px}
+.sv .zl,.sv .zr{position:absolute;top:0;bottom:0;width:35%}.sv .zl{left:0}.sv .zr{right:0}
+.swatch{display:flex;gap:8px;padding:10px;overflow-x:auto}.swatch i{width:34px;height:34px;border-radius:50%;flex:none;border:3px solid transparent}.swatch i.on{border-color:#fff}
 /* settings */
-.set{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line)}
-.set small{display:block;color:var(--mut);font-size:13px;margin-top:2px}
-.sw{position:relative;width:50px;height:28px;flex:none}
-.sw input{opacity:0;width:100%;height:100%;position:absolute;z-index:2;margin:0}
-.sw i{position:absolute;inset:0;background:#4a4380;border-radius:20px;transition:.2s}
-.sw i:after{content:'';position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
-.sw input:checked+i{background:var(--mint)}
-.sw input:checked+i:after{transform:translateX(22px)}
-.wps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
-.wp{height:96px;border-radius:14px;border:3px solid transparent;display:flex;align-items:flex-end;padding:6px;font-size:12px;font-weight:700;text-shadow:0 1px 3px #000}
-.wp.sel{border-color:var(--mint)}
+.set{display:flex;align-items:center;gap:14px;padding:13px 18px;width:100%;text-align:left}.set:active{background:var(--surf2)}
+.set .ico{width:38px;height:38px;border-radius:12px;background:var(--surf2);display:grid;place-items:center;color:var(--pri);flex:none}
+.set .mid small{white-space:normal}
+.sw{position:relative;width:48px;height:28px;flex:none}.sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;z-index:2}
+.sw i{position:absolute;inset:0;background:var(--line);border-radius:20px;transition:.2s}.sw i:after{content:'';position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px #0003}
+.sw input:checked+i{background:var(--ok)}.sw input:checked+i:after{transform:translateX(20px)}
+.wps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:10px 16px}.wp{height:120px;border-radius:16px;border:3px solid transparent;display:flex;align-items:flex-end;padding:8px;font-size:12px;font-weight:800;color:#fff;text-shadow:0 1px 3px #0008;background-size:cover}.wp.sel{border-color:var(--pri)}
+.seg{display:flex;background:var(--surf2);border-radius:14px;padding:3px;margin:6px 16px}.seg button{flex:1;padding:9px;border-radius:11px;font-weight:700;font-size:14px;color:var(--mut)}.seg button.on{background:var(--surf);color:var(--txt);box-shadow:var(--sh)}
+code.l{display:block;word-break:break-all;background:var(--surf2);border-radius:10px;padding:9px 11px;font-size:12px;color:var(--pri);margin:8px 0}
 /* lock */
-.lock{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 50% 0,#3a2a82 0,transparent 60%),var(--bg);display:flex;align-items:center;justify-content:center}
-.lockbox{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px;width:100%;max-width:340px}
-.lockbox p{color:var(--mut);font-size:14px;min-height:20px;text-align:center}
-.lockico{font-size:44px}
-.dots{display:flex;gap:16px;margin:10px 0 14px}
-.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--mut)}
-.dots i.on{background:var(--mint);border-color:var(--mint)}
-.pad{display:grid;grid-template-columns:repeat(3,76px);gap:14px}
-.pad button{height:76px;border-radius:50%;background:var(--card);font-size:28px;font-weight:700}
-.pad button:active{background:var(--violet)}
-.shake{animation:sh .4s}
-@keyframes sh{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
-#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#000d;color:#fff;padding:10px 18px;border-radius:20px;z-index:200;font-size:14px;max-width:86%;text-align:center}
+.lock{position:fixed;inset:0;z-index:200;background:radial-gradient(circle at 50% 0,rgba(255,138,92,.35) 0,transparent 55%),var(--bg);display:flex;align-items:center;justify-content:center}
+.lockbox{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px;width:100%;max-width:340px}.lockbox h2{font-weight:800}.lockbox p{color:var(--mut);font-size:14px;min-height:20px;text-align:center}
+.dots{display:flex;gap:16px;margin:10px 0 16px}.dots i{width:15px;height:15px;border-radius:50%;border:2px solid var(--mut)}.dots i.on{background:var(--pri);border-color:var(--pri)}
+.pad{display:grid;grid-template-columns:repeat(3,74px);gap:14px}.pad button{height:74px;border-radius:50%;background:var(--surf);box-shadow:var(--sh);font-size:27px;font-weight:700}.pad button:active{background:var(--pri);color:#fff}
+.shake{animation:sh .4s}@keyframes sh{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+.linkb{color:var(--mut);text-decoration:underline;font-size:14px;margin-top:12px}
+#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:20px;z-index:300;font-size:14px;max-width:86%;text-align:center;box-shadow:0 6px 20px #0005}
+.ldr{position:absolute;top:60px;left:50%;transform:translateX(-50%);background:var(--surf);padding:6px 12px;border-radius:14px;font-size:12px;color:var(--mut);box-shadow:var(--sh);z-index:5}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <div id="lock" class="hidden"></div>
-<div id="viewer" class="hidden"></div>
-<div id="sheet" class="hidden"></div>
 <div id="toast" class="hidden"></div>
-
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const CFG = window.BUDDY_CONFIG;
 const sb = supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_KEY);
-const $ = s => document.querySelector(s);
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+const ls = { get: (k, d) => { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }, del: k => { try { localStorage.removeItem(k); } catch (e) {} } };
+const PAGE = 40, EDIT_WINDOW = 15 * 60 * 1000;
 
-let me, profile, owner, view = 'login', tab = 'chats', cur = null;
-let msgs = [], invites = [], noLock = false, locked = false, claimMsg = '';
-const people = new Map();
-const urlCache = new Map();
+/* ---------- icons ---------- */
+const P = {
+  chat: '<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/>',
+  status: '<circle cx="12" cy="12" r="10" stroke-dasharray="4 3"/><circle cx="12" cy="12" r="4"/>',
+  req: '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  search: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+  send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+  mic: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/>',
+  clip: '<path d="M21.4 11l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/>',
+  smile: '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+  back: '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+  more: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+  x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',
+  copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  reply: '<polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+  lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  camera: '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+  video: '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>',
+  play: '<polygon points="6 3 20 12 6 21 6 3" fill="currentColor"/>',
+  pause: '<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>',
+  edit: '<path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/>',
+  type: '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>',
+  block: '<circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/>',
+  eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  chev: '<polyline points="9 18 15 12 9 6"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  out: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+  sun: '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>',
+  finger: '<path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M12 12v4c0 1 0 2-.5 3"/><path d="M8.7 22c.2-.7.4-1.5.6-3"/><path d="M14 13.1c0 2 0 4-1 6"/><path d="M17.8 20c.4-1.3.7-2.7.9-4.5"/><path d="M18 11.5c0-3.3-2.7-6-6-6a6 6 0 0 0-3 .8"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'
+};
+const ic = (n, s = 22) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[n] || ''}</svg>`;
+const LOGO = (s = 36) => `<svg width="${s}" height="${s}" viewBox="0 0 512 512"><defs><linearGradient id="lg${s}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a5c"/><stop offset="1" stop-color="#ff4f86"/></linearGradient></defs><rect width="512" height="512" rx="120" fill="url(#lg${s})"/><ellipse cx="256" cy="234" rx="150" ry="124" fill="#fff"/><polygon points="150,320 150,395 232,345" fill="#fff"/><ellipse cx="212" cy="224" rx="16" ry="22" fill="#2b2140"/><ellipse cx="300" cy="224" rx="16" ry="22" fill="#2b2140"/><path d="M200 276q56 52 112 0" stroke="#2b2140" stroke-width="18" stroke-linecap="round" fill="none"/><path d="M410 96l10 28 28 10-28 10-10 28-10-28-28-10 28-10z" fill="#ffd23f"/></svg>`;
 
-const LOGO = (s = 90) => `<svg width="${s}" height="${s}" viewBox="0 0 512 512"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b6cff"/><stop offset="1" stop-color="#ff7eb6"/></linearGradient></defs><rect width="512" height="512" rx="120" fill="url(#lg)"/><rect x="90" y="100" width="260" height="170" rx="58" fill="#fff"/><polygon points="130,260 130,330 200,262" fill="#fff"/><rect x="190" y="215" width="236" height="160" rx="52" fill="#5df2c4" stroke="#a46cff" stroke-width="14"/><polygon points="372,365 372,430 310,368" fill="#5df2c4"/><circle cx="170" cy="185" r="16" fill="#8b6cff"/><circle cx="220" cy="185" r="16" fill="#8b6cff"/><circle cx="270" cy="185" r="16" fill="#8b6cff"/></svg>`;
+/* ---------- state ---------- */
+let me, profile, owner;
+const people = new Map(), cache = new Map(), unread = new Map(), typing = new Map(), urlCache = new Map();
+let blocked = new Set(), statuses = [], seenSt = new Set();
+let T = null, route = { v: 'home', p: {} }, tab = 'chats', replyTo = null, homeQ = '';
+let locked = false, noLock = false, ignorePop = false, exitArmed = false, panelClose = null;
+function closePanel() { if (panelClose) panelClose(); }
+const ovs = [];
+const addOv = f => ovs.push(f);
+const rmOv = f => { const i = ovs.indexOf(f); if (i >= 0) ovs.splice(i, 1); };
 
-function toast(t) {
-  const el = $('#toast'); el.textContent = t; el.classList.remove('hidden');
-  clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 2600);
-}
-
-/* ---------------- WALLPAPERS ---------------- */
-const doodle = `url("data:image/svg+xml,${encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170'><text x='10' y='40' font-size='26' opacity='.17'>🎈</text><text x='95' y='70' font-size='24' opacity='.17'>🎮</text><text x='30' y='130' font-size='26' opacity='.17'>🍕</text><text x='110' y='155' font-size='24' opacity='.17'>✨</text></svg>")}")`;
-const WALLS = [
-  { id: 'doodle', n: 'Doodle Night', bg: `${doodle}, linear-gradient(160deg,#1a1440,#2b1a55)`, size: '170px 170px, cover' },
-  { id: 'candy', n: 'Candy Doodle', bg: `${doodle}, linear-gradient(160deg,#4b1d52,#c0467f)`, size: '170px 170px, cover' },
-  { id: 'sunset', n: 'Sunset Vibes', bg: 'linear-gradient(160deg,#3a1c71,#d76d77,#ffaf7b)', size: 'cover' },
-  { id: 'mint', n: 'Mint Chill', bg: 'linear-gradient(160deg,#0b2a2a,#14554f)', size: 'cover' },
-  { id: 'ocean', n: 'Ocean', bg: 'linear-gradient(170deg,#0f2027,#203a43,#2c5364)', size: 'cover' },
-  { id: 'plain', n: 'Midnight', bg: '#0f0d22', size: 'auto' }
-];
-const getWall = () => WALLS.find(w => w.id === localStorage.getItem('buddy_wp')) || WALLS[0];
-function applyWall(el) { const w = getWall(); el.style.background = w.bg; el.style.backgroundSize = w.size; }
-
-/* ---------------- PIN LOCK ---------------- */
-const PIN_KEY = 'buddy_pin';
-const hasPin = () => !!localStorage.getItem(PIN_KEY);
-async function sha(s) {
-  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('buddy:' + s));
-  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
-}
-function hideLock() { $('#lock').className = 'hidden'; $('#lock').innerHTML = ''; }
-function askPin(title, { sub = '', cancel = false, shake = false } = {}) {
-  return new Promise(res => {
-    const el = $('#lock'); let v = '';
-    el.className = 'lock';
-    el.innerHTML = `<div class="lockbox ${shake ? 'shake' : ''}"><div class="lockico">🔒</div><h2>${esc(title)}</h2><p>${esc(sub)}</p><div class="dots"><i></i><i></i><i></i><i></i></div><div class="pad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k => k === '' ? '<span></span>' : `<button data-k="${k}">${k}</button>`).join('')}</div>${cancel ? '<button class="link" id="pcancel">Cancel</button>' : '<button class="link" id="pforgot">Forgot PIN? Log out</button>'}</div>`;
-    const upd = () => el.querySelectorAll('.dots i').forEach((d, i) => d.classList.toggle('on', i < v.length));
-    el.onclick = e => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.id === 'pcancel') { hideLock(); res(null); return; }
-      if (b.id === 'pforgot') { if (confirm('Log out and remove PIN? You will need to sign in again.')) { localStorage.removeItem(PIN_KEY); hideLock(); logout(); } return; }
-      const k = b.dataset.k;
-      if (k === '⌫') v = v.slice(0, -1); else if (v.length < 4) v += k;
-      upd();
-      if (v.length === 4) { el.onclick = null; setTimeout(() => res(v), 120); }
-    };
-  });
-}
-async function lockNow() {
-  const stored = localStorage.getItem(PIN_KEY);
-  if (!stored || locked) return;
-  locked = true;
-  let err = false;
-  while (true) {
-    const p = await askPin('Enter PIN', { sub: err ? 'Wrong PIN, try again' : "Buddy's App is locked", shake: err });
-    if (await sha(p) === stored) break;
-    err = true; if (navigator.vibrate) navigator.vibrate(120);
-  }
-  hideLock(); locked = false;
-}
-async function setPinFlow() {
-  if (hasPin()) {
-    const o = await askPin('Enter current PIN', { cancel: true }); if (o === null) return;
-    if (await sha(o) !== localStorage.getItem(PIN_KEY)) { hideLock(); return toast('Wrong PIN'); }
-  }
-  const a = await askPin('Set new PIN', { sub: '4 digits', cancel: true }); if (a === null) return;
-  const b = await askPin('Confirm PIN', { cancel: true }); if (b === null) return;
-  hideLock();
-  if (a !== b) return toast("PINs didn't match");
-  localStorage.setItem(PIN_KEY, await sha(a)); toast('PIN set 🔒'); renderSettings();
-}
-async function removePinFlow() {
-  const o = await askPin('Enter PIN to remove', { cancel: true }); if (o === null) return;
-  hideLock();
-  if (await sha(o) !== localStorage.getItem(PIN_KEY)) return toast('Wrong PIN');
-  localStorage.removeItem(PIN_KEY); toast('PIN removed'); renderSettings();
-}
-let hiddenAt = 0;
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { hiddenAt = Date.now(); if (me) setOnline(false); }
-  else {
-    if (me) { setOnline(true); resync(); }
-    if (noLock) noLock = false;
-    else if (hasPin() && hiddenAt && Date.now() - hiddenAt > 1500) lockNow();
-  }
-});
-
-/* ---------------- SCREENS ---------------- */
-function info(emoji, title, text, buttons = []) {
-  view = 'info';
-  $('#app').innerHTML = `<div class="center"><div class="big">${emoji}</div><h1>${esc(title)}</h1><p>${esc(text)}</p>${buttons.map((b, i) => `<button class="btn ${b[2] || ''}" data-i="${i}">${esc(b[0])}</button>`).join('')}</div>`;
-  $('#app').onclick = e => { const b = e.target.closest('button[data-i]'); if (b) buttons[+b.dataset.i][1](); };
-}
-function showLogin() {
-  view = 'login';
-  const inv = localStorage.getItem('buddy_invite');
-  $('#app').innerHTML = `<div class="center">${LOGO(96)}<h1>Buddy's App</h1><p>Your private hangout with your people 🎈</p><button class="gbtn" id="gbtn"><svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.3 0 11.7-2.1 15.6-5.7l-7.5-5.8c-2.1 1.4-4.8 2.3-8.1 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>${inv ? '<span class="note">✅ Invite link detected</span>' : '<span class="note" style="color:var(--mut)">Only invited buddies can join</span>'}</div>`;
-  $('#gbtn').onclick = () => sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: location.origin + location.pathname, queryParams: { prompt: 'select_account' } }
-  });
-}
-async function logout() {
-  try { await setOnline(false); } catch (e) {}
-  await sb.auth.signOut(); location.href = location.pathname;
-}
-
-/* ---------------- BOOT ---------------- */
-async function getProfile() {
-  for (let i = 0; i < 6; i++) {
-    const { data } = await sb.from('profiles').select('*').eq('id', me.id).maybeSingle();
-    if (data) return data;
-    await sleep(800);
-  }
-  return null;
-}
-async function init() {
-  const q = new URLSearchParams(location.search).get('invite');
-  if (q) localStorage.setItem('buddy_invite', q);
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-  if (CFG.SUPABASE_KEY.startsWith('PASTE')) return info('🔑', 'Key missing', 'Open config.js on GitHub and paste your Supabase publishable key.');
-  if (hasPin()) await lockNow();
-  const { data: { session } } = await sb.auth.getSession();
-  if (location.hash.includes('access_token') || location.search.includes('code=') || q) history.replaceState({}, '', location.pathname);
-  if (!session) return showLogin();
-  me = session.user;
-  boot();
-}
-async function boot() {
-  profile = await getProfile();
-  if (!profile) return info('😕', 'Something went wrong', 'Could not load your profile.', [['Try again', () => location.reload()], ['Log out', logout, 'alt']]);
-  if (profile.status === 'new') {
-    const code = localStorage.getItem('buddy_invite');
-    if (code) {
-      const { data } = await sb.rpc('claim_invite', { p_code: code });
-      localStorage.removeItem('buddy_invite');
-      if (data === 'ok' || data === 'owner') profile = await getProfile();
-      else if (data === 'used') claimMsg = 'This invite link was already used.';
-      else if (data === 'invalid') claimMsg = 'This invite link is not valid.';
-    }
-  }
-  if (profile.status === 'new') return info('🔗', 'Invite needed', claimMsg || "Buddy's App is invite-only. Open the link your buddy sent you.", [['Log out', logout, 'alt']]);
-  if (profile.status === 'pending') return waiting();
-  if (profile.status === 'rejected') return info('🚫', 'No access', 'Your request was not approved.', [['Log out', logout, 'alt']]);
-  startApp();
-}
-function waiting() {
-  info('⏳', 'Waiting for approval', 'Your request was sent. You can come in as soon as it is approved.', [['Check again', async () => { const p = await getProfile(); if (p.status !== 'pending') location.reload(); else toast('Still waiting…'); }], ['Log out', logout, 'alt']]);
-  clearInterval(waiting.t);
-  waiting.t = setInterval(async () => { const p = await getProfile(); if (p && p.status !== 'pending') location.reload(); }, 5000);
-}
-
-/* ---------------- DATA ---------------- */
-async function loadPeople() {
-  if (profile.role === 'owner') {
-    const { data } = await sb.from('profiles').select('*').neq('id', me.id);
-    (data || []).forEach(p => people.set(p.id, p));
-    owner = profile;
-  } else {
-    const { data } = await sb.from('profiles').select('*').eq('role', 'owner');
-    (data || []).forEach(p => people.set(p.id, p));
-    owner = (data || [])[0];
-  }
-  people.set(me.id, profile);
-}
-async function loadMsgs() {
-  const { data } = await sb.from('messages').select('*').order('created_at', { ascending: false }).limit(1500);
-  msgs = (data || []).reverse();
-  const und = msgs.filter(m => m.receiver_id === me.id && !m.delivered_at).map(m => m.id);
-  if (und.length) {
-    const t = new Date().toISOString();
-    await sb.from('messages').update({ delivered_at: t }).in('id', und);
-    msgs.forEach(m => { if (und.includes(m.id)) m.delivered_at = t; });
-  }
-}
-const buddies = () => [...people.values()].filter(p => p.role !== 'owner' && p.status === 'approved' && p.id !== me.id);
-const pending = () => [...people.values()].filter(p => p.status === 'pending');
-const thread = pid => msgs.filter(m => m.sender_id === pid || m.receiver_id === pid);
-const lastMsg = pid => { const t = thread(pid); return t[t.length - 1]; };
-const unread = pid => msgs.filter(m => m.sender_id === pid && m.receiver_id === me.id && !m.read_at).length;
-
-async function startApp() {
-  await loadPeople(); await loadMsgs(); subscribe(); startPresence();
-  if (profile.role === 'owner') renderOwner();
-  else if (owner) openChat(owner);
-  else info('😕', 'Owner not found', 'Please try again later.', [['Retry', () => location.reload()]]);
-}
-async function resync() {
-  if (view === 'info' || view === 'login') return;
-  await loadPeople(); await loadMsgs(); refresh();
-}
-function refresh() {
-  if (view === 'home') fillHome();
-  else if (view === 'chat') { renderMsgs(); updHead(); markRead(); }
-}
-
-/* ---------------- REALTIME + PRESENCE ---------------- */
-function subscribe() {
-  sb.channel('buddy-live')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, async p => {
-      const m = p.new, o = p.old;
-      if (p.eventType === 'INSERT') {
-        if (m.sender_id !== me.id && m.receiver_id !== me.id) return;
-        if (!msgs.find(x => x.id === m.id)) msgs.push(m);
-        if (m.receiver_id === me.id && !m.delivered_at) {
-          const t = new Date().toISOString(); m.delivered_at = t;
-          sb.from('messages').update({ delivered_at: t }).eq('id', m.id).then(() => {});
-        }
-      } else if (p.eventType === 'UPDATE') {
-        const i = msgs.findIndex(x => x.id === m.id); if (i >= 0) msgs[i] = m;
-      } else if (p.eventType === 'DELETE') {
-        msgs = msgs.filter(x => x.id !== o.id);
-      }
-      refresh();
-    })
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, p => {
-      const r = p.new; if (!r || !r.id) return;
-      if (r.id === me.id) { profile = r; }
-      if (profile.role === 'owner' || r.role === 'owner' || r.id === me.id) people.set(r.id, r);
-      if (view === 'home') fillHome(); else if (view === 'chat') updHead();
-    })
-    .subscribe();
-}
-async function setOnline(v) {
-  if (!me) return;
-  await sb.from('profiles').update({ is_online: v, last_seen: new Date().toISOString() }).eq('id', me.id);
-}
-function startPresence() {
-  setOnline(true);
-  setInterval(() => { if (!document.hidden) setOnline(true); }, 25000);
-  setInterval(() => { if (view === 'chat') updHead(); }, 20000);
-  addEventListener('pagehide', () => setOnline(false));
-}
-function presence(p) {
-  if (!p) return { t: '', on: false };
-  const fresh = p.is_online && Date.now() - new Date(p.last_seen).getTime() < 75000;
-  if (fresh && p.show_online) return { t: 'online', on: true };
-  if (p.show_last_seen && p.last_seen) return { t: 'last seen ' + fmtSeen(p.last_seen), on: false };
-  return { t: '', on: false };
-}
-function fmtSeen(iso) {
-  const d = new Date(iso), n = new Date();
-  const tm = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-  if (d.toDateString() === n.toDateString()) return 'today at ' + tm;
-  const y = new Date(n - 864e5);
-  if (d.toDateString() === y.toDateString()) return 'yesterday at ' + tm;
-  return d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' at ' + tm;
-}
+/* ---------- helpers ---------- */
 const tmFmt = iso => new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 function dayLabel(iso) {
   const d = new Date(iso), n = new Date();
@@ -414,326 +250,820 @@ function dayLabel(iso) {
   if (d.toDateString() === new Date(n - 864e5).toDateString()) return 'Yesterday';
   return d.toLocaleDateString([], { day: 'numeric', month: 'long', year: 'numeric' });
 }
-const avatar = (p, cls = '') => `<div class="av ${cls}">${p && p.avatar_url ? `<img src="${esc(p.avatar_url)}" referrerpolicy="no-referrer" alt="">` : esc((p?.name || '?')[0].toUpperCase())}${cls !== 'noDot' && presence(p).on ? '<span class="on-dot"></span>' : ''}</div>`;
-const preview = m => !m ? 'Say hi 👋' : (m.sender_id === me.id ? 'You: ' : '') + (m.view_once ? '① One-time ' + (m.type === 'video' ? 'video' : 'photo') : m.type === 'image' ? '📷 Photo' : m.type === 'video' ? '🎥 Video' : m.type === 'voice' ? '🎤 Voice message' : m.body);
+function fmtSeen(iso) {
+  const d = new Date(iso), n = new Date(), tm = tmFmt(iso);
+  if (d.toDateString() === n.toDateString()) return 'today at ' + tm;
+  if (d.toDateString() === new Date(n - 864e5).toDateString()) return 'yesterday at ' + tm;
+  return d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' at ' + tm;
+}
+const fmtDur = s => { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+const avatar = (p, size = 48, dot = false) => `<div class="av" style="width:${size}px;height:${size}px;font-size:${Math.round(size * .42)}px">${p && p.avatar_url ? `<img src="${esc(p.avatar_url)}" loading="lazy" referrerpolicy="no-referrer" alt="">` : esc(((p && p.name) || '?').trim().charAt(0).toUpperCase() || '?')}${dot && presence(p).on ? '<i class="od"></i>' : ''}</div>`;
+function presence(p) {
+  if (!p) return { t: '', on: false };
+  const fresh = p.is_online && Date.now() - new Date(p.last_seen).getTime() < 75000;
+  if (fresh && p.show_online) return { t: 'online', on: true };
+  if (p.show_last_seen && p.last_seen) return { t: 'last seen ' + fmtSeen(p.last_seen), on: false };
+  return { t: '', on: false };
+}
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 2600); }
+function applyTheme() {
+  const pref = ls.get('buddy_theme', 'system');
+  const dark = pref === 'dark' || (pref === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  $('meta[name=theme-color]').content = dark ? '#161923' : '#ffffff';
+}
+applyTheme(); matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
-/* ---------------- OWNER HOME ---------------- */
-function renderOwner() {
-  view = 'home'; cur = null;
-  const app = $('#app');
-  app.innerHTML = `<div class="top"><div class="brand">${LOGO(34)}<b>Buddy's App</b></div><button class="ic" id="gear">⚙️</button></div><div class="body" id="body"></div><nav class="nav" id="nav"></nav>`;
-  $('#gear').onclick = renderSettings;
-  app.onclick = homeClick;
+function sheet(html) {
+  const bg = document.createElement('div'); bg.className = 'sheetbg'; bg._t = Date.now();
+  bg.innerHTML = `<div class="sheet">${html}</div>`; document.body.appendChild(bg);
+  const close = () => { rmOv(close); bg.remove(); };
+  addOv(close); bg.close = close;
+  bg.addEventListener('click', e => { if (e.target === bg && Date.now() - bg._t > 450) close(); });
+  return bg;
+}
+function menuSheet(items, head = '', onEmoji) {
+  const s = sheet(head + items.map((it, i) => `<button class="si ${it[3] ? 'danger' : ''}" data-i="${i}">${ic(it[0], 21)}<span>${esc(it[1])}</span></button>`).join(''));
+  s.addEventListener('click', e => {
+    const em = e.target.closest('[data-e]'); if (em && onEmoji) { s.close(); onEmoji(em.dataset.e); return; }
+    const b = e.target.closest('.si'); if (!b) return; s.close(); items[+b.dataset.i][2]();
+  });
+  return s;
+}
+function ask(title, text, okLabel, fn) {
+  const s = sheet(`<div style="padding:6px 12px 4px"><h3 style="font-weight:800;font-size:18px">${esc(title)}</h3><p style="color:var(--mut);margin:6px 0 14px;line-height:1.45">${esc(text)}</p><div class="row2"><button class="btn alt" data-n>Cancel</button><button class="btn" data-y>${esc(okLabel)}</button></div></div>`);
+  s.addEventListener('click', e => { if (e.target.closest('[data-n]')) s.close(); if (e.target.closest('[data-y]')) { s.close(); fn(); } });
+}
+
+/* ---------- navigation (back button) ---------- */
+function nav(v, p = {}) { history.pushState({ v, p }, ''); route = { v, p }; render(); }
+function goBack() { history.back(); }
+addEventListener('popstate', e => {
+  if (ignorePop) { ignorePop = false; return; }
+  if (ovs.length) { ovs[ovs.length - 1](); ignorePop = true; history.go(1); return; }
+  const s = e.state;
+  if (!s || s.base) {
+    if (!me) return;
+    if (exitArmed) { history.back(); return; }
+    exitArmed = true; toast('Press back again to exit'); setTimeout(() => exitArmed = false, 2000);
+    ignorePop = true; history.go(1); return;
+  }
+  route = s; render();
+});
+function render() {
+  [...ovs].reverse().forEach(f => f());
+  if (route.v !== 'chat') leaveChat();
+  const R = { home: rHome, chat: rChat, settings: rSettings, profile: rProfile, wall: rWall, blocked: rBlocked }[route.v] || rHome;
+  R(route.p);
+}
+
+/* ---------- app lock ---------- */
+const PIN_KEY = 'buddy_pin', FP_KEY = 'buddy_fp';
+const hasPin = () => !!ls.get(PIN_KEY, '');
+const hasFp = () => !!ls.get(FP_KEY, '');
+async function sha(s) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('buddy:' + s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+function holdLock() { noLock = true; setTimeout(() => noLock = false, 60000); }
+async function fpEnable() {
+  holdLock();
+  try {
+    const c = await navigator.credentials.create({ publicKey: { challenge: crypto.getRandomValues(new Uint8Array(32)), rp: { name: "Buddy's App" }, user: { id: crypto.getRandomValues(new Uint8Array(16)), name: (me && me.email) || 'buddy', displayName: (profile && profile.name) || 'Buddy' }, pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }], authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' }, timeout: 60000 } });
+    ls.set(FP_KEY, b64(c.rawId)); return true;
+  } catch (e) { return false; }
+}
+async function fpCheck() {
+  holdLock();
+  try {
+    await navigator.credentials.get({ publicKey: { challenge: crypto.getRandomValues(new Uint8Array(32)), allowCredentials: [{ type: 'public-key', id: unb64(ls.get(FP_KEY, '')), transports: ['internal'] }], userVerification: 'required', timeout: 60000 } });
+    return true;
+  } catch (e) { return false; }
+}
+function hideLock() { $('#lock').className = 'hidden'; $('#lock').innerHTML = ''; }
+function askPin(title, { sub = '', cancel = false, shake = false, fp = false } = {}) {
+  return new Promise(res => {
+    const el = $('#lock'); let v = '';
+    el.className = 'lock';
+    el.innerHTML = `<div class="lockbox ${shake ? 'shake' : ''}"><div style="color:var(--pri)">${ic('lock', 40)}</div><h2>${esc(title)}</h2><p>${esc(sub)}</p><div class="dots"><i></i><i></i><i></i><i></i></div><div class="pad">${[1,2,3,4,5,6,7,8,9,'fp',0,'⌫'].map(k => k === 'fp' ? (fp ? `<button data-k="FP" style="color:var(--pri)">${ic('finger', 30)}</button>` : '<span></span>') : `<button data-k="${k}">${k}</button>`).join('')}</div>${cancel ? '<button class="linkb" id="pcancel">Cancel</button>' : '<button class="linkb" id="pforgot">Forgot PIN? Log out</button>'}</div>`;
+    const upd = () => $$('.dots i', el).forEach((d, i) => d.classList.toggle('on', i < v.length));
+    el.onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.id === 'pcancel') { hideLock(); res(null); return; }
+      if (b.id === 'pforgot') { ask('Forgot PIN?', 'You will be logged out and the PIN removed. Sign in again with Google.', 'Log out', () => { ls.del(PIN_KEY); ls.del(FP_KEY); hideLock(); locked = false; logout(); }); return; }
+      const k = b.dataset.k;
+      if (k === 'FP') { el.onclick = null; res('FP'); return; }
+      if (k === '⌫') v = v.slice(0, -1); else if (v.length < 4) v += k;
+      upd(); if (v.length === 4) { el.onclick = null; setTimeout(() => res(v), 100); }
+    };
+  });
+}
+async function lockNow() {
+  const stored = ls.get(PIN_KEY, ''); if (!stored || locked) return;
+  locked = true; let err = false, tryFp = hasFp();
+  while (true) {
+    if (tryFp) { tryFp = false; while (document.hidden) await sleep(150); if (await fpCheck()) break; }
+    const p = await askPin('Enter PIN', { sub: err ? 'Wrong PIN, try again' : "Buddy's App is locked", shake: err, fp: hasFp() });
+    if (p === 'FP') { if (await fpCheck()) break; continue; }
+    if (await sha(p) === stored) break;
+    err = true; if (navigator.vibrate) navigator.vibrate(120);
+  }
+  hideLock(); locked = false;
+}
+async function setPinFlow() {
+  if (hasPin()) { const o = await askPin('Current PIN', { cancel: true }); if (o === null) return; if (await sha(o) !== ls.get(PIN_KEY, '')) { hideLock(); return toast('Wrong PIN'); } }
+  const a = await askPin('New PIN', { sub: '4 digits', cancel: true }); if (a === null) return;
+  const b = await askPin('Confirm PIN', { cancel: true }); if (b === null) return;
+  hideLock(); if (a !== b) return toast("PINs didn't match");
+  ls.set(PIN_KEY, await sha(a)); toast('PIN set 🔒'); if (route.v === 'settings') rSettings();
+}
+async function removePinFlow() {
+  const o = await askPin('Enter PIN to remove', { cancel: true }); if (o === null) return; hideLock();
+  if (await sha(o) !== ls.get(PIN_KEY, '')) return toast('Wrong PIN');
+  ls.del(PIN_KEY); ls.del(FP_KEY); toast('PIN removed'); rSettings();
+}
+let hiddenAt = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { hiddenAt = Date.now(); if (me) setOnline(false); if (me && hasPin() && !noLock && !locked) lockNow(); }
+  else { noLock = false; if (me) { setOnline(true); if (Date.now() - hiddenAt > 30000) resync(); } }
+});
+
+/* ---------- login / boot ---------- */
+function info(emoji, title, text, buttons = []) {
+  $('#app').innerHTML = `<div class="center"><div style="font-size:56px">${emoji}</div><h1>${esc(title)}</h1><p>${esc(text)}</p>${buttons.map((b, i) => `<button class="btn ${b[2] || ''}" data-i="${i}">${esc(b[0])}</button>`).join('')}</div>`;
+  $('#app').onclick = e => { const b = e.target.closest('button[data-i]'); if (b) buttons[+b.dataset.i][1](); };
+}
+function showLogin() {
+  const inv = ls.get('buddy_invite', '');
+  $('#app').onclick = null;
+  $('#app').innerHTML = `<div class="center">${LOGO(104)}<h1>Buddy's App</h1><p>Your private hangout with your people 🎈</p><button class="gbtn" id="gbtn"><svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.3 0 11.7-2.1 15.6-5.7l-7.5-5.8c-2.1 1.4-4.8 2.3-8.1 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button><span class="note">${inv ? '✅ Invite link detected' : 'Only invited buddies can join'}</span></div>`;
+  $('#gbtn').onclick = () => sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname, queryParams: { prompt: 'select_account' } } });
+}
+async function logout() { try { await setOnline(false); } catch (e) {} await sb.auth.signOut(); location.href = location.pathname; }
+async function getProfile() {
+  for (let i = 0; i < 6; i++) { const { data } = await sb.from('profiles').select('*').eq('id', me.id).maybeSingle(); if (data) return data; await sleep(800); }
+  return null;
+}
+async function init() {
+  const q = new URLSearchParams(location.search).get('invite');
+  if (q) ls.set('buddy_invite', q);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if (CFG.SUPABASE_KEY.startsWith('PASTE')) return info('🔑', 'Key missing', 'Open config.js and paste your Supabase publishable key.');
+  if (hasPin()) await lockNow();
+  const { data: { session } } = await sb.auth.getSession();
+  if (location.hash.includes('access_token') || location.search.includes('code=') || q) history.replaceState({}, '', location.pathname);
+  if (!session) return showLogin();
+  me = session.user; boot();
+}
+async function boot() {
+  profile = await getProfile();
+  if (!profile) return info('😕', 'Something went wrong', 'Could not load your profile.', [['Try again', () => location.reload()], ['Log out', logout, 'alt']]);
+  let claimMsg = '';
+  if (profile.status === 'new') {
+    const code = ls.get('buddy_invite', '');
+    if (code) {
+      const { data } = await sb.rpc('claim_invite', { p_code: code }); ls.del('buddy_invite');
+      if (data === 'ok' || data === 'owner') profile = await getProfile();
+      else if (data === 'used') claimMsg = 'This invite link was already used.';
+      else if (data === 'invalid') claimMsg = 'This invite link is not valid.';
+    }
+  }
+  if (profile.status === 'new') return info('🔗', 'Invite needed', claimMsg || "Buddy's App is invite-only. Open the link your buddy sent you.", [['Log out', logout, 'alt']]);
+  if (profile.status === 'pending') {
+    info('⏳', 'Waiting for approval', 'Your request is sent. You can come in as soon as it is approved.', [['Check again', async () => { const p = await getProfile(); if (p.status !== 'pending') location.reload(); else toast('Still waiting…'); }], ['Log out', logout, 'alt']]);
+    setInterval(async () => { const p = await getProfile(); if (p && p.status !== 'pending') location.reload(); }, 5000); return;
+  }
+  if (profile.status === 'rejected') return info('🚫', 'No access', 'Your request was not approved.', [['Log out', logout, 'alt']]);
+  startApp();
+}
+
+/* ---------- data ---------- */
+async function loadPeople() {
+  if (profile.role === 'owner') { const { data } = await sb.from('profiles').select('*').neq('id', me.id); (data || []).forEach(p => people.set(p.id, p)); owner = profile; }
+  else { const { data } = await sb.from('profiles').select('*').eq('role', 'owner'); (data || []).forEach(p => people.set(p.id, p)); owner = (data || [])[0]; }
+  people.set(me.id, profile);
+}
+async function loadMeta() {
+  const { data } = await sb.from('messages').select('*').order('created_at', { ascending: false }).limit(300);
+  (data || []).forEach(m => cache.set(m.id, m));
+  const { data: u } = await sb.from('messages').select('sender_id').eq('receiver_id', me.id).is('read_at', null).limit(1000);
+  unread.clear(); (u || []).forEach(r => unread.set(r.sender_id, (unread.get(r.sender_id) || 0) + 1));
+  const und = (data || []).filter(m => m.receiver_id === me.id && !m.delivered_at).map(m => m.id);
+  if (und.length) sb.from('messages').update({ delivered_at: new Date().toISOString() }).in('id', und).then(() => {});
+}
+async function loadBlocks() { const { data } = await sb.from('blocks').select('blocked').eq('blocker', me.id); blocked = new Set((data || []).map(r => r.blocked)); }
+async function loadStatuses() {
+  const since = new Date(Date.now() - 864e5).toISOString();
+  const { data } = await sb.from('statuses').select('*').gt('created_at', since).order('created_at');
+  statuses = data || [];
+  const { data: v } = await sb.from('status_views').select('status_id').eq('viewer_id', me.id);
+  seenSt = new Set((v || []).map(x => x.status_id));
+}
+const partnerOf = m => m.sender_id === me.id ? m.receiver_id : m.sender_id;
+const hiddenForMe = m => (m.deleted_for || []).includes(me.id);
+function lastFor(pid) { let best = null; cache.forEach(m => { if (partnerOf(m) !== pid || hiddenForMe(m)) return; if (!best || m.created_at > best.created_at) best = m; }); return best; }
+async function startApp() {
+  await Promise.all([loadPeople(), loadMeta(), loadBlocks(), loadStatuses()]);
+  subscribe(); startPresence();
+  history.replaceState({ base: 1 }, ''); history.pushState({ v: 'home', p: {} }, '');
+  route = { v: 'home', p: {} }; render();
+}
+async function resync() { if (!me) return; await Promise.all([loadPeople(), loadMeta(), loadBlocks(), loadStatuses()]); if (route.v === 'home') fillHome(); if (route.v === 'chat' && T) { T.more = true; T.msgs = []; await loadOlder(true); } }
+
+/* ---------- realtime ---------- */
+let homeT = 0;
+function scheduleHome() { if (homeT) return; homeT = requestAnimationFrame(() => { homeT = 0; if (route.v === 'home') fillHome(); }); }
+function subscribe() {
+  sb.channel('buddy-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, onMsg)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, p => {
+      const r = p.new; if (!r || !r.id) return;
+      if (r.id === me.id) profile = r;
+      if (profile.role === 'owner' || r.role === 'owner' || r.id === me.id) people.set(r.id, r);
+      if (route.v === 'home') scheduleHome(); else if (route.v === 'chat') updHead();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'statuses' }, async () => { await loadStatuses(); if (route.v === 'home' && tab === 'status') fillHome(); })
+    .subscribe();
+  sb.channel('typing_to_' + me.id).on('broadcast', { event: 'typing' }, ({ payload }) => {
+    clearTimeout(typing.get(payload.uid));
+    if (payload.on) typing.set(payload.uid, setTimeout(() => { typing.delete(payload.uid); typUI(); }, 4500)); else typing.delete(payload.uid);
+    typUI();
+  }).subscribe();
+}
+function typUI() { if (route.v === 'chat') updHead(); else if (route.v === 'home') scheduleHome(); }
+function onMsg(p) {
+  const m = p.new; if (!m || !m.id) return;
+  if (m.sender_id !== me.id && m.receiver_id !== me.id) return;
+  const pid = partnerOf(m), inThread = T && T.pid === pid && route.v === 'chat';
+  cache.set(m.id, Object.assign(cache.get(m.id) || {}, m));
+  if (p.eventType === 'INSERT' && m.receiver_id === me.id) {
+    if (!m.delivered_at) { m.delivered_at = new Date().toISOString(); sb.from('messages').update({ delivered_at: m.delivered_at }).eq('id', m.id).then(() => {}); }
+    if (!(inThread && !document.hidden)) unread.set(pid, (unread.get(pid) || 0) + 1);
+  }
+  if (T && T.pid === pid) {
+    const i = T.msgs.findIndex(x => x.id === m.id);
+    if (i >= 0) { Object.assign(T.msgs[i], m); delete T.msgs[i]._pending; } else if (p.eventType === 'INSERT') T.msgs.push(cache.get(m.id));
+    if (route.v === 'chat') { fetchReplies([m]).then(() => renderMsgs()); markRead(); }
+  }
+  if (route.v === 'home') scheduleHome();
+}
+async function setOnline(v) { if (!me) return; await sb.from('profiles').update({ is_online: v, last_seen: new Date().toISOString() }).eq('id', me.id); }
+function startPresence() {
+  setOnline(true);
+  setInterval(() => { if (!document.hidden) setOnline(true); }, 25000);
+  setInterval(() => { if (route.v === 'chat') updHead(); }, 20000);
+  addEventListener('pagehide', () => setOnline(false));
+}
+
+/* ---------- home ---------- */
+const isOwner = () => profile.role === 'owner';
+function chatList() {
+  let list = isOwner() ? [...people.values()].filter(p => p.role !== 'owner' && p.status === 'approved') : (owner ? [owner] : []);
+  list = list.filter(p => !homeQ || (p.name || '').toLowerCase().includes(homeQ.toLowerCase()));
+  return list.sort((a, b) => ((lastFor(b.id) || {}).created_at || '').localeCompare((lastFor(a.id) || {}).created_at || ''));
+}
+function rHome() {
+  const tabs = [['chats', 'chat', 'Chats'], ['status', 'status', 'Status']];
+  if (isOwner()) tabs.push(['req', 'req', 'Requests'], ['inv', 'link', 'Invite']);
+  $('#app').onclick = null;
+  $('#app').innerHTML = `<div class="top"><div class="brand">${LOGO(34)}<span>Buddy's</span></div><div class="topr"><button class="ib" id="hset">${ic('user', 24)}</button></div></div><div class="body" id="body"></div><nav class="nav" id="nav">${tabs.map(t => `<button data-tab="${t[0]}">${ic(t[1], 23)}<span>${t[2]}</span><i class="pill hidden"></i></button>`).join('')}</nav>`;
+  $('#hset').onclick = () => nav('settings');
+  $('#nav').onclick = e => { const b = e.target.closest('[data-tab]'); if (b) { tab = b.dataset.tab; fillHome(); } };
+  $('#body').onclick = homeClick;
+  let lp; $('#body').addEventListener('touchstart', e => { const it = e.target.closest('[data-chat]'); if (!it) return; lp = setTimeout(() => chatMenu(it.dataset.chat), 550); }, { passive: true });
+  ['touchend', 'touchmove'].forEach(ev => $('#body').addEventListener(ev, () => clearTimeout(lp), { passive: true }));
   fillHome();
+}
+function tickSvg(m) {
+  if (m._pending) return ic('clock', 13);
+  if (m._failed) return '<span style="color:#ff5a5a;font-weight:800">!</span>';
+  const one = '<svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 6 5 10 14 1"/></svg>';
+  const two = '<svg width="20" height="11" viewBox="0 0 20 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 6 5 10 14 1"/><polyline points="7 8 8 9.5 18 1"/></svg>';
+  return m.read_at ? `<span class="tk r">${two}</span>` : m.delivered_at ? `<span class="tk">${two}</span>` : `<span class="tk">${one}</span>`;
+}
+function preview(m) {
+  if (!m) return 'Say hi 👋';
+  if (m.deleted_at) return '🚫 This message was deleted';
+  const pre = m.sender_id === me.id ? 'You: ' : '';
+  if (m.view_once) return pre + '① One-time ' + (m.type === 'video' ? 'video' : 'photo');
+  return pre + ({ image: '📷 Photo', video: '🎥 Video', voice: '🎤 Voice message', sticker: '🎭 Sticker', gif: 'GIF' }[m.type] || m.body || '');
 }
 function fillHome() {
   const body = $('#body'); if (!body) return;
-  const pc = pending().length;
-  $('#nav').innerHTML = [['chats', '💬', 'Chats', 0], ['req', '🙋', 'Requests', pc], ['inv', '🔗', 'Invite', 0]].map(([k, e, l, n]) => `<button data-tab="${k}" class="${tab === k ? 'on' : ''}"><span class="e">${e}</span>${l}${n ? `<span class="dotb">${n}</span>` : ''}</button>`).join('');
+  const pc = isOwner() ? [...people.values()].filter(p => p.status === 'pending').length : 0;
+  $$('#nav button').forEach(b => { b.classList.toggle('on', b.dataset.tab === tab); const pill = $('.pill', b); if (b.dataset.tab === 'req' && pc) { pill.textContent = pc; pill.classList.remove('hidden'); } else pill.classList.add('hidden'); });
+  const st = body.scrollTop;
   if (tab === 'chats') {
-    const list = buddies().sort((a, b) => new Date(lastMsg(b.id)?.created_at || 0) - new Date(lastMsg(a.id)?.created_at || 0));
-    body.innerHTML = list.length ? list.map(p => { const m = lastMsg(p.id), u = unread(p.id); return `<button class="item" data-chat="${p.id}">${avatar(p)}<div class="mid"><b>${esc(p.name)}</b><small>${esc(preview(m))}</small></div><div class="rt"><span>${m ? tmFmt(m.created_at) : ''}</span>${u ? `<span class="badge">${u}</span>` : ''}</div></button>`; }).join('') : `<div class="empty"><span class="big">🎉</span>No buddies yet.<br>Tap <b>Invite</b> and send your first link.</div>`;
-  } else if (tab === 'req') {
-    const list = pending();
-    body.innerHTML = list.length ? list.map(p => `<div class="card"><div class="row">${avatar(p, 'noDot')}<div class="mid"><b>${esc(p.name)}</b><small>${esc(p.email)}</small></div></div><div class="acts"><button class="btn ok sm" data-ok="${p.id}">Approve ✅</button><button class="btn no sm" data-no="${p.id}">Reject</button></div></div>`).join('') : `<div class="empty"><span class="big">☕</span>No requests right now.</div>`;
-  } else {
-    body.innerHTML = `<div class="card"><b>Create invite link</b><small style="display:block;color:var(--mut);margin:4px 0 10px">One link = one buddy. They sign in, then you approve.</small><input class="inp" id="invlabel" placeholder="Whose link? (optional)"><div style="height:10px"></div><button class="btn" id="newinv" style="width:100%">＋ New invite link</button></div><div id="invlist"></div>`;
+    const list = chatList();
+    body.innerHTML = (isOwner() ? `<div class="search">${ic('search', 18)}<input id="hq" placeholder="Search chats" value="${esc(homeQ)}"></div>` : '') + (list.length ? list.map(p => {
+      const m = lastFor(p.id), u = unread.get(p.id) || 0, ty = typing.get(p.id);
+      return `<button class="item" data-chat="${p.id}">${avatar(p, 54, true)}<div class="mid"><b>${esc(p.name)}</b><small class="${ty ? 'ty' : ''}">${ty ? 'typing…' : `${m && m.sender_id === me.id && !m.deleted_at ? tickSvg(m) : ''}${esc(preview(m))}`}</small></div><div class="rt"><span style="${u ? 'color:var(--pri);font-weight:800' : ''}">${m ? tmFmt(m.created_at) : ''}</span>${u ? `<span class="badge">${u}</span>` : ''}</div></button>`;
+    }).join('') : `<div class="empty"><div class="em">🎉</div>${isOwner() ? 'No buddies yet.<br>Open <b>Invite</b> and send your first link.' : 'Loading your chat…'}</div>`);
+    const hq = $('#hq'); if (hq) hq.oninput = () => { homeQ = hq.value; const pos = hq.selectionStart; fillHome(); const n = $('#hq'); n.focus(); n.setSelectionRange(pos, pos); };
+  } else if (tab === 'status') fillStatus(body);
+  else if (tab === 'req') {
+    const list = [...people.values()].filter(p => p.status === 'pending');
+    body.innerHTML = list.length ? list.map(p => `<div class="card"><div class="item" style="padding:0;cursor:default">${avatar(p, 48)}<div class="mid"><b>${esc(p.name)}</b><small>${esc(p.email)}</small></div></div><div class="row2"><button class="btn ok sm" data-ok="${p.id}">Approve</button><button class="btn no sm" data-no="${p.id}">Reject</button></div></div>`).join('') : `<div class="empty"><div class="em">☕</div>No requests right now.</div>`;
+  } else if (tab === 'inv') {
+    body.innerHTML = `<div class="card"><b style="font-size:17px">New invite link</b><p style="color:var(--mut);font-size:13.5px;margin:4px 0 10px">One link works for one buddy. They sign in, then you approve.</p><input class="inp" id="invlabel" placeholder="Whose link? (optional)"><div class="row2"><button class="btn" id="newinv">Create link</button></div></div><div id="invlist"></div>`;
     loadInvites();
   }
+  body.scrollTop = st;
 }
 const invLink = c => location.origin + location.pathname.replace(/index\.html$/, '') + '?invite=' + c;
 async function loadInvites() {
-  const { data } = await sb.from('invites').select('*').order('created_at', { ascending: false });
-  invites = data || [];
-  const el = $('#invlist'); if (!el) return;
-  el.innerHTML = invites.map(i => `<div class="card"><div class="row"><div class="mid"><b>${esc(i.label || 'Invite')}</b><small>${i.used_by ? '✅ Used' : '🟢 Not used yet'}</small></div><button class="ic" data-delinv="${i.code}">🗑️</button></div>${i.used_by ? '' : `<code class="l">${esc(invLink(i.code))}</code><div class="acts"><button class="btn sm" data-copy="${i.code}">Copy</button><button class="btn alt sm" data-share="${i.code}">Share</button></div>`}</div>`).join('');
+  const { data } = await sb.from('invites').select('*').order('created_at', { ascending: false }); const el = $('#invlist'); if (!el) return;
+  el.innerHTML = (data || []).map(i => `<div class="card"><div class="item" style="padding:0;cursor:default"><div class="mid"><b>${esc(i.label || 'Invite')}</b><small>${i.used_by ? '✅ Used' : '🟢 Not used yet'}</small></div><button class="ib" data-delinv="${i.code}">${ic('trash', 20)}</button></div>${i.used_by ? '' : `<code class="l">${esc(invLink(i.code))}</code><div class="row2"><button class="btn sm" data-copy="${i.code}">Copy</button><button class="btn alt sm" data-share="${i.code}">Share</button></div>`}</div>`).join('');
 }
 async function homeClick(e) {
-  const t = e.target.closest('button'); if (!t) return;
-  const d = t.dataset;
-  if (d.tab) { tab = d.tab; fillHome(); }
-  else if (d.chat) openChat(people.get(d.chat));
-  else if (d.ok || d.no) {
-    const id = d.ok || d.no, st = d.ok ? 'approved' : 'rejected';
-    const { error } = await sb.from('profiles').update({ status: st }).eq('id', id);
-    if (error) return toast('Error: ' + error.message);
-    people.get(id).status = st; toast(d.ok ? 'Approved ✅' : 'Rejected'); fillHome();
-  }
-  else if (t.id === 'newinv') {
-    const { error } = await sb.from('invites').insert({ label: $('#invlabel').value.trim() || null });
-    if (error) return toast('Error: ' + error.message);
-    $('#invlabel').value = ''; loadInvites(); toast('Link created 🎉');
-  }
-  else if (d.copy) { try { await navigator.clipboard.writeText(invLink(d.copy)); toast('Link copied 📋'); } catch (_) { prompt('Copy this link', invLink(d.copy)); } }
-  else if (d.share) { const l = invLink(d.share); if (navigator.share) navigator.share({ title: "Buddy's App", text: 'Join me on Buddy\'s App 🎈', url: l }).catch(() => {}); else { try { await navigator.clipboard.writeText(l); toast('Link copied 📋'); } catch (_) { prompt('Copy', l); } } }
-  else if (d.delinv) { if (confirm('Delete this invite?')) { await sb.from('invites').delete().eq('code', d.delinv); loadInvites(); } }
+  const t = e.target.closest('button'); if (!t) return; const d = t.dataset;
+  if (d.chat) return nav('chat', { pid: d.chat });
+  if (d.ok || d.no) { const id = d.ok || d.no, st = d.ok ? 'approved' : 'rejected'; const { error } = await sb.from('profiles').update({ status: st }).eq('id', id); if (error) return toast('Error: ' + error.message); people.get(id).status = st; toast(d.ok ? 'Approved ✅' : 'Rejected'); return fillHome(); }
+  if (t.id === 'newinv') { const { error } = await sb.from('invites').insert({ label: $('#invlabel').value.trim() || null }); if (error) return toast('Error: ' + error.message); $('#invlabel').value = ''; loadInvites(); return toast('Link created 🎉'); }
+  if (d.copy) { try { await navigator.clipboard.writeText(invLink(d.copy)); toast('Link copied 📋'); } catch (_) { prompt('Copy this link', invLink(d.copy)); } }
+  if (d.share) { const l = invLink(d.share); if (navigator.share) navigator.share({ title: "Buddy's App", text: "Join me on Buddy's App 🎈", url: l }).catch(() => {}); else { try { await navigator.clipboard.writeText(l); toast('Link copied 📋'); } catch (_) { prompt('Copy', l); } } }
+  if (d.delinv) ask('Delete invite?', 'This link will stop working.', 'Delete', async () => { await sb.from('invites').delete().eq('code', d.delinv); loadInvites(); });
+  if (d.st) openStatus(d.st);
+  if (d.addst) addStatusMenu();
 }
-
-/* ---------------- CHAT ---------------- */
-const EMOJIS = '😀😃😄😁😆😅😂🤣🥲😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😒😞😔😟😕🙁😣😖😫😩🥺😢😭😤😠😡🤬🤯😳🥵🥶😱😨😰😥😓🤗🤔🫣🤭🤫🤥😶😐😑😬🙄😯😦😧😮😲🥱😴🤤😪😵🤐🥴🤢🤮🤧😷🤒🤕🤑🤠😈👿💩👻💀👽🤖🎃😺😸😹😻😼😽🙀😿😾🙈🙉🙊💋💌💘💝💖💗💓💞💕💔❤️🧡💛💚💙💜🤎🖤🤍💯💢💥💫💦💨💬👍👎👌✌️🤞🤟🤘🤙👈👉👆👇☝️✋🤚👋🤝🙏💪🫶👏🙌🤲🔥✨🌟⭐🎉🎊🎈🎁🏆🥇🎮🎵🎶🎤🎧🍕🍔🍟🌭🍿🍩🍪🍫🍭☕🍺🥂🍻🌹🌸🌈☀️🌙⚡❄️🐶🐱🐼🐯🦁🐸🐵🦄🚀✈️🏍️🚗⚽🏏🏀';
-const emojiList = () => window.Intl && Intl.Segmenter ? [...new Intl.Segmenter().segment(EMOJIS)].map(s => s.segment) : Array.from(EMOJIS);
-let rec = null, onceNext = false;
-
-function openChat(p) {
-  cur = p; view = 'chat';
-  const isOwner = profile.role === 'owner';
-  $('#app').onclick = null;
-  $('#app').innerHTML = `<div class="chat"><header class="chead">${isOwner ? '<button class="ic" id="back">‹</button>' : '<span style="width:6px"></span>'}<div id="hav"></div><div class="who"><b id="hname"></b><small id="hpres"></small></div><button class="ic" id="menu">⋮</button></header><div class="msgs" id="msgs"></div><div class="emojip hidden" id="emoji"></div><div class="rec hidden" id="recbar"><span class="pulse"></span><span class="tm" id="rtm">0:00</span><button class="btn alt sm" id="rcancel">Cancel</button><button class="btn sm" id="rsend">Send ➤</button></div><footer class="composer" id="comp"><button class="cbtn" id="emobtn">😊</button><button class="cbtn" id="attach">📎</button><textarea id="inp" rows="1" placeholder="Message"></textarea><button class="cbtn" id="sendbtn">🎤</button></footer></div><input type="file" id="fl" accept="image/*,video/*" class="hidden">`;
-  applyWall($('#msgs'));
-  const inp = $('#inp');
-  const togg = () => { const has = inp.value.trim().length > 0; $('#sendbtn').textContent = has ? '➤' : '🎤'; $('#sendbtn').classList.toggle('send', has); };
-  inp.oninput = () => { inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 110) + 'px'; togg(); };
-  $('#sendbtn').onclick = async () => {
-    if (inp.value.trim()) { const t = inp.value.trim(); inp.value = ''; inp.style.height = 'auto'; togg(); if (!(await insertMsg({ body: t }))) { inp.value = t; togg(); } }
-    else startRec();
-  };
-  if (isOwner) $('#back').onclick = () => { cur = null; renderOwner(); };
-  $('#menu').onclick = () => openSheet([['⚙️ Settings & wallpaper', renderSettings], ...(isOwner ? [['🚫 Block this buddy', blockBuddy]] : [])]);
-  $('#attach').onclick = () => openSheet([['🖼️ Photo / Video', () => pickFile(false)], ['① One-time Photo / Video', () => pickFile(true)]]);
-  $('#fl').onchange = onFile;
-  $('#rcancel').onclick = () => stopRec(false);
-  $('#rsend').onclick = () => stopRec(true);
-  const em = $('#emoji');
-  em.innerHTML = emojiList().map(x => `<button>${x}</button>`).join('');
-  em.onclick = e => { const b = e.target.closest('button'); if (!b) return; const s = inp.selectionStart ?? inp.value.length; inp.value = inp.value.slice(0, s) + b.textContent + inp.value.slice(inp.selectionEnd ?? s); inp.selectionStart = inp.selectionEnd = s + b.textContent.length; inp.oninput(); };
-  $('#emobtn').onclick = () => { em.classList.toggle('hidden'); $('#emobtn').textContent = em.classList.contains('hidden') ? '😊' : '⌨️'; if (em.classList.contains('hidden')) inp.focus(); };
-  updHead(); renderMsgs(true); markRead();
+function chatMenu(pid) {
+  const p = people.get(pid); if (!p) return; navigator.vibrate && navigator.vibrate(15);
+  const items = [['trash', 'Clear chat', () => ask('Clear chat?', 'Messages are removed only for you.', 'Clear', () => clearChat(pid))]];
+  items.push(blocked.has(pid) ? ['block', 'Unblock', () => unblock(pid)] : ['block', 'Block', () => ask('Block ' + p.name + '?', 'You will not get messages from each other.', 'Block', () => block(pid))]);
+  if (isOwner()) items.push(['x', 'Remove buddy', () => ask('Remove ' + p.name + '?', 'They lose access to the app.', 'Remove', async () => { await sb.from('profiles').update({ status: 'rejected' }).eq('id', pid); p.status = 'rejected'; fillHome(); }), true]);
+  menuSheet(items, `<div style="padding:4px 12px 10px;font-weight:800;font-size:17px">${esc(p.name)}</div>`);
 }
+async function clearChat(pid) { await sb.rpc('clear_chat', { pid }); cache.forEach((m, id) => { if (partnerOf(m) === pid) { m.deleted_for = [...(m.deleted_for || []), me.id]; } }); unread.set(pid, 0); if (T && T.pid === pid) { T.msgs.forEach(m => m.deleted_for = [...(m.deleted_for || []), me.id]); renderMsgs(); } if (route.v === 'home') fillHome(); toast('Chat cleared'); }
+async function block(pid) { await sb.from('blocks').insert({ blocker: me.id, blocked: pid }); blocked.add(pid); toast('Blocked'); if (route.v === 'chat') applyBlockUI(); else if (route.v === 'blocked') rBlocked(); }
+async function unblock(pid) { await sb.from('blocks').delete().eq('blocker', me.id).eq('blocked', pid); blocked.delete(pid); toast('Unblocked'); if (route.v === 'chat') applyBlockUI(); else if (route.v === 'blocked') rBlocked(); }
+
+/* ---------- chat ---------- */
+function leaveChat() { if (T) { sendTyping(false); T = null; replyTo = null; } }
+const sendChs = new Map();
+function chFor(pid) { if (!sendChs.has(pid)) { const c = sb.channel('typing_to_' + pid); c.subscribe(); sendChs.set(pid, c); } return sendChs.get(pid); }
+let lastTyp = 0;
+function sendTyping(on, kind = 'text') { if (!T) return; try { chFor(T.pid).send({ type: 'broadcast', event: 'typing', payload: { uid: me.id, on, k: kind } }); } catch (e) {} }
 function updHead() {
-  if (view !== 'chat' || !cur) return;
-  const p = people.get(cur.id) || cur; cur = p;
+  if (route.v !== 'chat' || !T) return; const p = people.get(T.pid); if (!p) return;
+  const ty = typing.get(T.pid), pr = presence(p);
+  $('#hn').textContent = p.name; const hp = $('#hp'); hp.textContent = ty ? 'typing…' : pr.t; hp.className = (ty || pr.on) ? 'on' : '';
+}
+function rChat({ pid }) {
+  const p = people.get(pid); if (!p) return nav('home');
+  T = { pid, msgs: [], more: true, loading: false, stick: true }; unread.set(pid, 0); replyTo = null;
+  $('#app').onclick = null;
+  $('#app').innerHTML = `<div class="chead"><button class="ib" id="cb">${ic('back', 24)}</button><button class="chp" id="chp">${avatar(p, 40, true)}<div class="who"><b id="hn"></b><small id="hp"></small></div></button><button class="ib" id="cs">${ic('search', 21)}</button><button class="ib" id="cm">${ic('more', 22)}</button></div><div class="msgs" id="msgs"></div><div id="rbar" class="rbar hidden"></div><div id="blockbar" class="blockbar hidden"></div><div class="comp" id="comp"><div class="cin"><button class="ib" id="ce">${ic('smile', 24)}</button><textarea id="inp" rows="1" placeholder="Message"></textarea><button class="ib" id="ca">${ic('clip', 22)}</button></div><button class="fab" id="cf">${ic('mic', 22)}</button></div><div class="recbar hidden" id="recbar"><button class="ib" id="rc">${ic('trash', 22)}</button><span class="rdot"></span><b id="rt" style="min-width:38px">0:00</b><div class="wave">${'<i></i>'.repeat(14).replace(/<i>/g, () => `<i style="animation-delay:${(Math.random() * .9).toFixed(2)}s">`)}</div><button class="fab" id="rs">${ic('send', 20)}</button></div><div class="panel" id="panel"></div>`;
+  $('#cb').onclick = goBack;
+  $('#chp').onclick = () => contactInfo(p);
+  $('#cs').onclick = openSearch;
+  $('#cm').onclick = () => {
+    const items = [['search', 'Search', openSearch], ['image', 'Wallpaper', () => nav('wall')], ['trash', 'Clear chat', () => ask('Clear chat?', 'Messages are removed only for you.', 'Clear', () => clearChat(pid))]];
+    items.push(blocked.has(pid) ? ['block', 'Unblock', () => unblock(pid)] : ['block', 'Block', () => ask('Block ' + p.name + '?', 'You will not get messages from each other.', 'Block', () => block(pid))]);
+    menuSheet(items);
+  };
+  const box = $('#msgs'); applyWall(box); bindMsgs(box);
+  const inp = $('#inp');
+  const togg = () => { $('#cf').innerHTML = inp.value.trim() ? ic('send', 21) : ic('mic', 22); };
+  inp.oninput = () => { inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 110) + 'px'; togg(); if (Date.now() - lastTyp > 2200) { lastTyp = Date.now(); sendTyping(true); } clearTimeout(inp._t); inp._t = setTimeout(() => sendTyping(false), 3000); };
+  inp.onfocus = () => closePanel && closePanel();
+  $('#cf').onclick = async () => { const t = inp.value.trim(); if (t) { inp.value = ''; inp.style.height = 'auto'; togg(); sendTyping(false); await sendMsg({ body: t }); } else startRec(); };
+  $('#ce').onclick = togglePanel;
+  $('#ca').onclick = attachMenu;
+  $('#rc').onclick = () => stopRec(false); $('#rs').onclick = () => stopRec(true);
+  applyBlockUI(); updHead(); chFor(pid); loadOlder(true);
+}
+function applyBlockUI() {
+  const b = blocked.has(T.pid), p = people.get(T.pid);
+  $('#comp').classList.toggle('hidden', b); $('#blockbar').classList.toggle('hidden', !b);
+  $('#blockbar').innerHTML = `You blocked ${esc(p.name)}. <button style="color:var(--pri);font-weight:800" id="ub">Unblock</button>`;
+  const ub = $('#ub'); if (ub) ub.onclick = () => unblock(T.pid);
+}
+function contactInfo(p) {
   const pr = presence(p);
-  $('#hav').innerHTML = avatar(p, 'sm');
-  $('#hname').textContent = p.name;
-  const el = $('#hpres'); el.textContent = pr.t; el.className = pr.on ? '' : 'off';
+  sheet(`<div style="text-align:center;padding:6px 10px 10px"><div style="display:flex;justify-content:center">${avatar(p, 96)}</div><h3 style="font-size:20px;font-weight:800;margin-top:10px">${esc(p.name)}</h3><p style="color:var(--mut);margin-top:3px">${esc(p.about || '')}</p>${isOwner() ? `<p style="color:var(--mut);font-size:13px;margin-top:6px">${esc(p.email)}</p>` : ''}<p style="color:${pr.on ? 'var(--ok)' : 'var(--mut)'};font-size:13px;margin-top:6px">${esc(pr.t)}</p></div>`);
 }
-function openSheet(items) {
-  const s = $('#sheet'); s.className = 'sheetbg';
-  s.innerHTML = `<div class="sheet">${items.map((it, i) => `<button data-i="${i}">${esc(it[0])}</button>`).join('')}<button data-i="x" style="color:var(--mut)">Cancel</button></div>`;
-  s.onclick = e => { const b = e.target.closest('button'); if (e.target === s || (b && b.dataset.i === 'x')) { s.className = 'hidden'; return; } if (b) { s.className = 'hidden'; items[+b.dataset.i][1](); } };
+async function fetchReplies(rows) {
+  const ids = [...new Set(rows.map(r => r.reply_to).filter(id => id && !cache.has(id)))]; if (!ids.length) return;
+  const { data } = await sb.from('messages').select('*').in('id', ids); (data || []).forEach(m => cache.set(m.id, m));
 }
-async function blockBuddy() {
-  if (!confirm('Block ' + cur.name + '? They will lose access.')) return;
-  await sb.from('profiles').update({ status: 'rejected' }).eq('id', cur.id);
-  people.get(cur.id).status = 'rejected'; cur = null; renderOwner();
+async function loadOlder(first) {
+  if (!T) return; while (T && T.loading) await sleep(60); if (!T || !T.more) return;
+  const pid = T.pid; T.loading = true;
+  let q = sb.from('messages').select('*').or(`and(sender_id.eq.${me.id},receiver_id.eq.${pid}),and(sender_id.eq.${pid},receiver_id.eq.${me.id})`).order('created_at', { ascending: false }).limit(PAGE);
+  if (!first && T.msgs.length) q = q.lt('created_at', T.msgs[0].created_at);
+  const { data } = await q; if (!T || T.pid !== pid) return; T.loading = false;
+  const rows = (data || []).reverse(); if (rows.length < PAGE) T.more = false;
+  rows.forEach(m => cache.set(m.id, m));
+  const have = new Set(T.msgs.map(x => x.id)); T.msgs = [...rows.filter(r => !have.has(r.id)), ...T.msgs];
+  await fetchReplies(rows); if (!T || T.pid !== pid) return;
+  renderMsgs(first ? 'bottom' : 'keep'); if (first) markRead();
 }
-
-const tick = m => m.read_at ? '<span class="tk r">✓✓</span>' : m.delivered_at ? '<span class="tk">✓✓</span>' : '<span class="tk">✓</span>';
-const sig = m => (m.delivered_at ? 1 : 0) + '' + (m.read_at ? 1 : 0) + (m.viewed ? 1 : 0);
-function bubInner(m) {
+const csig = m => `${m.deleted_at ? 1 : 0}|${m.viewed ? 1 : 0}|${JSON.stringify(m.reactions || {})}|${m._failed ? 1 : 0}|${m.reply_to || ''}|${cache.has(m.reply_to) ? 1 : 0}`;
+const ssig = m => (m._pending ? 'p' : '') + (m.read_at ? 'r' : m.delivered_at ? 'd' : 's');
+function renderMsgs(mode) {
+  const box = $('#msgs'); if (!box || !T) return;
+  const vis = T.msgs.filter(m => !hiddenForMe(m)).sort((a, b) => a.created_at.localeCompare(b.created_at));
+  const near = box.scrollHeight - box.scrollTop - box.clientHeight < 180, prevH = box.scrollHeight, prevTop = box.scrollTop;
+  const ex = new Map($$('.mrow', box).map(n => [n.dataset.id, n])); const ids = new Set(vis.map(m => m.id));
+  ex.forEach((n, id) => { if (!ids.has(id)) n.remove(); });
+  const emp = $('.empty', box); if (emp) emp.remove();
+  let prev = null;
+  vis.forEach(m => {
+    let n = ex.get(m.id); const cs = csig(m);
+    if (!n) n = makeRow(m); else if (n.dataset.cs !== cs) { const nn = makeRow(m); n.replaceWith(nn); n = nn; } else if (n.dataset.ss !== ssig(m)) { n.dataset.ss = ssig(m); const tk = $('.tkw', n); if (tk) tk.innerHTML = tickSvg(m); }
+    const ref = prev ? prev.nextSibling : box.firstChild;
+    if (n.parentNode !== box || n !== ref) box.insertBefore(n, ref);
+    prev = n;
+  });
+  if (!vis.length) box.innerHTML = '<div class="empty"><div class="em">👋</div>Say hi!</div>';
+  let pd = '';
+  $$('.mrow', box).forEach(n => { const m = cache.get(n.dataset.id) || T.msgs.find(x => x.id === n.dataset.id); if (!m) return; const d = new Date(m.created_at).toDateString(); const h = $('.dayhdr', n); if (d !== pd) { h.style.display = ''; h.textContent = dayLabel(m.created_at); } else h.style.display = 'none'; pd = d; });
+  const last = vis[vis.length - 1];
+  if (mode === 'bottom') box.scrollTop = box.scrollHeight;
+  else if (mode === 'keep') box.scrollTop = prevTop + (box.scrollHeight - prevH);
+  else if (near || (last && last.sender_id === me.id)) box.scrollTop = box.scrollHeight;
+}
+function nameOf(id) { return id === me.id ? 'You' : ((people.get(id) || {}).name || 'Buddy'); }
+function replyBox(m) {
+  const o = cache.get(m.reply_to);
+  return `<div class="rq" data-goto="${m.reply_to}"><b>${o ? esc(nameOf(o.sender_id)) : 'Message'}</b><span>${o ? esc(preview(o).replace(/^You: /, '')) : 'Original message'}</span></div>`;
+}
+const EMO_ONLY = /^(?:\p{Extended_Pictographic}|\p{Emoji_Modifier}|\u200d|\ufe0f|\s)+$/u;
+function bubHtml(m) {
   const mine = m.sender_id === me.id;
-  if (m.type === 'text') return `<span class="t">${esc(m.body).replace(/\n/g, '<br>')}</span>`;
+  const meta = `<div class="meta"><span>${tmFmt(m.created_at)}</span>${mine ? `<span class="tkw">${tickSvg(m)}</span>` : ''}</div>`;
+  if (m.deleted_at) return `<div class="bub del">🚫 <i>${mine ? 'You deleted this message' : 'This message was deleted'}</i>${meta}</div>`;
+  const rq = m.reply_to ? replyBox(m) : '';
+  if (m.type === 'sticker') { const [e, t, c] = (m.body || '').split('|'); return `<div class="bub nobg">${rq}<div class="stk s-${esc(c || 'a')}"><span class="se">${esc(e)}</span><b>${esc(t)}</b></div>${meta}</div>`; }
+  if (m.type === 'gif') return `<div class="bub nobg">${rq}<img class="med" src="${esc(m.body)}" loading="lazy" alt="GIF">${meta}</div>`;
+  if (m.type === 'text') {
+    const body = m.body || ''; const big = EMO_ONLY.test(body) && [...(window.Intl && Intl.Segmenter ? [...new Intl.Segmenter().segment(body.trim())] : Array.from(body.trim()))].length <= 3;
+    if (big) return `<div class="bub nobg">${rq}<div class="big">${esc(body)}</div>${meta}</div>`;
+    return `<div class="bub">${rq}<span class="t">${esc(body).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')}</span>${meta}</div>`;
+  }
   if (m.view_once) {
     const k = m.type === 'video' ? 'video' : 'photo';
-    if (mine) return `<div class="once ${m.viewed ? 'done' : ''}">① One-time ${k} · ${m.viewed ? 'Opened ✅' : 'Not opened yet'}</div>`;
-    return m.viewed ? `<div class="once done">① Opened</div>` : `<button class="once" data-once="${m.id}">① Tap to view one-time ${k}</button>`;
+    if (mine) return `<div class="bub">${rq}<div class="once ${m.viewed ? 'done' : ''}"><span class="oc">1</span>${m.viewed ? 'Opened' : 'One-time ' + k + ' · not opened'}</div>${meta}</div>`;
+    return `<div class="bub">${m.viewed ? `<div class="once done"><span class="oc">1</span>Opened</div>` : `<button class="once" data-once="1"><span class="oc">1</span>Tap to view one-time ${k}</button>`}${meta}</div>`;
   }
-  if (m.type === 'image') return `<img class="med" data-path="${esc(m.media_path)}" data-view="1" alt="">`;
-  if (m.type === 'video') return `<video class="med" controls playsinline preload="metadata" data-path="${esc(m.media_path)}"></video>`;
-  return `<audio controls preload="none" data-path="${esc(m.media_path)}"></audio>`;
+  if (m.type === 'image') return `<div class="bub">${rq}<img class="med" data-path="${esc(m.media_path)}" data-view="1" loading="lazy" decoding="async" alt="">${m.body ? `<div class="cap">${esc(m.body)}</div>` : ''}${meta}</div>`;
+  if (m.type === 'video') return `<div class="bub">${rq}<div class="vwrap" data-view="1"><video data-path="${esc(m.media_path)}" preload="metadata" muted playsinline></video><div class="pl"><i>${ic('play', 22)}</i></div></div>${m.body ? `<div class="cap">${esc(m.body)}</div>` : ''}${meta}</div>`;
+  return `<div class="bub">${rq}<div class="vp"><button class="vpb">${ic('play', 18)}</button><div class="vpt"><i></i></div><span class="vpd">${fmtDur(+m.body || 0)}</span></div>${meta}</div>`;
 }
-const metaHtml = m => `<span>${tmFmt(m.created_at)}</span>${m.sender_id === me.id ? tick(m) : ''}`;
-function makeNode(m, prev) {
-  const f = document.createDocumentFragment();
-  if (!prev || new Date(prev.created_at).toDateString() !== new Date(m.created_at).toDateString()) {
-    const d = document.createElement('div'); d.className = 'day'; d.textContent = dayLabel(m.created_at); d.dataset.dayfor = m.id; f.appendChild(d);
-  }
-  const r = document.createElement('div');
-  r.className = 'row' + (m.sender_id === me.id ? ' me' : '');
-  r.dataset.id = m.id; r.dataset.sig = sig(m);
-  r.innerHTML = `<div class="bub">${bubInner(m)}<div class="meta">${metaHtml(m)}</div></div>`;
-  f.appendChild(r); return f;
-}
-function renderMsgs(force) {
-  const box = $('#msgs'); if (!box || !cur) return;
-  const t = thread(cur.id);
-  const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 140;
-  const dom = [...box.querySelectorAll('.row')].map(r => r.dataset.id);
-  const ok = !force && dom.every((id, i) => t[i] && t[i].id === id);
-  if (!ok) {
-    box.innerHTML = '';
-    t.forEach((m, i) => box.appendChild(makeNode(m, t[i - 1])));
-    if (!t.length) box.innerHTML = '<div class="day">Say hi 👋</div>';
-    box.scrollTop = box.scrollHeight;
-  } else {
-    box.querySelectorAll('.day').forEach(d => { if (!d.dataset.dayfor) d.remove(); });
-    t.forEach((m, i) => {
-      if (i < dom.length) {
-        const r = box.querySelector(`.row[data-id="${m.id}"]`);
-        if (r && r.dataset.sig !== sig(m)) {
-          r.dataset.sig = sig(m);
-          r.querySelector('.meta').innerHTML = metaHtml(m);
-          if (m.view_once) r.querySelector('.bub').firstElementChild.outerHTML = bubInner(m);
-        }
-      } else box.appendChild(makeNode(m, t[i - 1]));
-    });
-    const last = t[t.length - 1];
-    if (nearBottom || (last && last.sender_id === me.id)) box.scrollTop = box.scrollHeight;
-  }
-  loadMedia(box);
-}
-function loadMedia(box) {
-  box.querySelectorAll('[data-path]:not([src])').forEach(async el => {
-    const u = await mediaUrl(el.dataset.path); if (u) el.src = u;
-  });
+function makeRow(m) {
+  const d = document.createElement('div'); d.className = 'mrow'; d.dataset.id = m.id; d.dataset.cs = csig(m); d.dataset.ss = ssig(m);
+  const rx = Object.entries(m.reactions || {}); const groups = {}; rx.forEach(([u, e]) => { (groups[e] = groups[e] || []).push(u); });
+  d.innerHTML = `<div class="dayhdr"></div><div class="line ${m.sender_id === me.id ? 'me' : ''}">${bubHtml(m)}</div>${rx.length ? `<div class="rx" style="${m.sender_id === me.id ? 'justify-content:flex-end' : ''}">${Object.entries(groups).map(([e, us]) => `<button class="rxc ${us.includes(me.id) ? 'mine' : ''}" data-e="${esc(e)}">${esc(e)}${us.length > 1 ? ' ' + us.length : ''}</button>`).join('')}</div>` : ''}`;
+  $$('[data-path]', d).forEach(async el => { const u = m._blob || await mediaUrl(el.dataset.path); if (u) el.src = u; });
+  return d;
 }
 async function mediaUrl(path, secs = 3600) {
   const c = urlCache.get(path); if (c && c.exp > Date.now()) return c.url;
-  const { data, error } = await sb.storage.from('media').createSignedUrl(path, secs);
-  if (error) return null;
-  urlCache.set(path, { url: data.signedUrl, exp: Date.now() + (secs - 300) * 1000 });
-  return data.signedUrl;
+  const { data, error } = await sb.storage.from('media').createSignedUrl(path, secs); if (error) return null;
+  urlCache.set(path, { url: data.signedUrl, exp: Date.now() + (secs - 300) * 1000 }); return data.signedUrl;
 }
-async function markRead() {
-  if (view !== 'chat' || !cur || document.hidden) return;
-  const ids = msgs.filter(m => m.sender_id === cur.id && m.receiver_id === me.id && !m.read_at).map(m => m.id);
-  if (!ids.length) return;
-  const t = new Date().toISOString();
-  msgs.forEach(m => { if (ids.includes(m.id)) { m.read_at = t; m.delivered_at = m.delivered_at || t; } });
-  await sb.from('messages').update({ read_at: t, delivered_at: t }).in('id', ids);
+const msgOf = row => cache.get(row.dataset.id) || (T && T.msgs.find(x => x.id === row.dataset.id));
+function bindMsgs(box) {
+  box.addEventListener('click', e => {
+    const row = e.target.closest('.mrow'); if (!row) return; const m = msgOf(row); if (!m) return;
+    if (e.target.closest('[data-once]')) return openOnce(m);
+    if (e.target.closest('[data-view]')) return openViewer(m);
+    if (e.target.closest('.vpb')) return togglePlay(m);
+    const rx = e.target.closest('.rxc'); if (rx) return reactTo(m, rx.dataset.e);
+    const g = e.target.closest('[data-goto]'); if (g) return gotoMsg(g.dataset.goto);
+    if (m._failed) return retrySend(m);
+  });
+  let tm, sx, sy, moved, swRow;
+  box.addEventListener('touchstart', e => { const row = e.target.closest('.mrow'); if (!row || e.target.closest('.rxc,a')) { swRow = null; return; } const t = e.touches[0]; sx = t.clientX; sy = t.clientY; moved = false; swRow = row; tm = setTimeout(() => { if (!moved) { navigator.vibrate && navigator.vibrate(15); msgMenu(msgOf(row)); swRow = null; } }, 420); }, { passive: true });
+  box.addEventListener('touchmove', e => { if (!swRow) return; const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy; if (Math.abs(dx) > 9 || Math.abs(dy) > 9) { moved = true; clearTimeout(tm); } if (dx > 8 && Math.abs(dy) < 40) { const b = $('.bub', swRow); if (b) b.style.transform = `translateX(${Math.min(dx, 80)}px)`; } }, { passive: true });
+  box.addEventListener('touchend', () => { clearTimeout(tm); if (!swRow) return; const b = $('.bub', swRow); const tr = b ? parseFloat((b.style.transform.match(/translateX\(([\d.]+)px/) || [])[1] || 0) : 0; if (b) b.style.transform = ''; if (tr >= 60) { const m = msgOf(swRow); if (m && !m.deleted_at) setReply(m); } swRow = null; });
+  box.addEventListener('contextmenu', e => { const row = e.target.closest('.mrow'); if (row) { e.preventDefault(); msgMenu(msgOf(row)); } });
+  box.addEventListener('scroll', () => { T && (T.stick = box.scrollHeight - box.scrollTop - box.clientHeight < 180); if (box.scrollTop < 140) loadOlder(); }, { passive: true });
 }
-async function insertMsg(o) {
-  const row = { sender_id: me.id, receiver_id: cur.id, type: 'text', ...o };
-  const { data, error } = await sb.from('messages').insert(row).select().single();
-  if (error) { toast('Not sent: ' + error.message); return false; }
-  if (!msgs.find(x => x.id === data.id)) msgs.push(data);
-  renderMsgs(); return true;
+async function gotoMsg(id) {
+  let tries = 0; while (T && !$(`.mrow[data-id="${id}"]`) && T.more && tries < 25) { await loadOlder(); tries++; }
+  const n = $(`.mrow[data-id="${id}"]`); if (!n) return toast('Message not found');
+  n.scrollIntoView({ block: 'center' }); n.classList.add('hl'); setTimeout(() => n.classList.remove('hl'), 1600);
+}
+function msgMenu(m) {
+  if (!m) return; const mine = m.sender_id === me.id;
+  const quick = ['👍', '❤️', '😂', '😮', '😢', '🙏'];
+  const head = m.deleted_at ? '' : `<div class="rxrow">${quick.map(e => `<button data-e="${e}">${e}</button>`).join('')}<button data-e="+">${ic('plus', 22)}</button></div>`;
+  const items = [];
+  if (!m.deleted_at) {
+    items.push(['reply', 'Reply', () => setReply(m)]);
+    if (m.type === 'text') items.push(['copy', 'Copy', () => { navigator.clipboard && navigator.clipboard.writeText(m.body); toast('Copied'); }]);
+    if (!m.view_once && (m.type === 'text' || m.media_path)) items.push(['share', 'Share', () => shareMsg(m)]);
+    if (!m.view_once && (m.type === 'image' || m.type === 'video')) items.push(['download', 'Save to gallery', () => saveMedia(m, false)]);
+  }
+  items.push(['trash', 'Delete', () => deleteMenu(m), true]);
+  menuSheet(items, head, e => reactTo(m, e));
+}
+async function reactTo(m, e) {
+  if (e === '+') return emojiSheet(x => reactTo(m, x));
+  const r = { ...(m.reactions || {}) }; if (r[me.id] === e) delete r[me.id]; else r[me.id] = e; m.reactions = r;
+  if (T) { const t = T.msgs.find(x => x.id === m.id); if (t) t.reactions = r; } renderMsgs();
+  const { error } = await sb.rpc('react', { mid: m.id, emo: r[me.id] || '' }); if (error) toast('Could not react');
+}
+function deleteMenu(m) {
+  const mine = m.sender_id === me.id, canAll = mine && !m.deleted_at && Date.now() - new Date(m.created_at).getTime() < EDIT_WINDOW;
+  const items = [['trash', 'Delete for me', async () => { const { error } = await sb.rpc('delete_for_me', { mid: m.id }); if (error) return toast('Could not delete'); m.deleted_for = [...(m.deleted_for || []), me.id]; const t = T && T.msgs.find(x => x.id === m.id); if (t) t.deleted_for = m.deleted_for; renderMsgs(); }, true]];
+  if (canAll) items.push(['trash', 'Delete for everyone', async () => {
+    const { data, error } = await sb.from('messages').update({ deleted_at: new Date().toISOString() }).eq('id', m.id).select('deleted_at').single();
+    if (error || !data || !data.deleted_at) return toast('Too late — only within 15 minutes');
+    if (m.media_path) sb.storage.from('media').remove([m.media_path]);
+    m.deleted_at = data.deleted_at; m.body = null; m.media_path = null; const t = T && T.msgs.find(x => x.id === m.id); if (t) Object.assign(t, m); renderMsgs();
+  }, true]);
+  menuSheet(items, `<div style="padding:4px 12px 10px;color:var(--mut);font-size:13.5px">${mine && !canAll ? 'Delete for everyone works only for 15 minutes after sending.' : 'Delete message?'}</div>`);
+}
+function setReply(m) {
+  replyTo = m; const b = $('#rbar'); b.classList.remove('hidden');
+  b.innerHTML = `<div class="rq"><b>${esc(nameOf(m.sender_id))}</b><span>${esc(preview(m).replace(/^You: /, ''))}</span></div><button class="ib" id="rx">${ic('x', 20)}</button>`;
+  $('#rx').onclick = clearReply; $('#inp').focus();
+}
+function clearReply() { replyTo = null; const b = $('#rbar'); if (b) { b.classList.add('hidden'); b.innerHTML = ''; } }
+async function shareMsg(m) {
+  try {
+    if (m.type === 'text') return navigator.share ? navigator.share({ text: m.body }) : toast('Share not supported');
+    const f = await fileOf(m); if (navigator.canShare && navigator.canShare({ files: [f] })) await navigator.share({ files: [f] }); else toast('Share not supported');
+  } catch (e) {}
+}
+async function fileOf(m) { const u = await mediaUrl(m.media_path); const b = await (await fetch(u)).blob(); return new File([b], `Buddys_${Date.now()}.${(b.type.split('/')[1] || 'bin').replace('quicktime', 'mov')}`, { type: b.type }); }
+async function saveMedia(m, share) {
+  try {
+    toast('Saving…'); const f = await fileOf(m);
+    if (share && navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f] }); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 8000); toast('Saved — check Gallery / Downloads');
+  } catch (e) { if (e && e.name === 'AbortError') return; toast('Could not save'); }
 }
 
-/* media */
-function pickFile(once) { onceNext = once; noLock = true; $('#fl').click(); }
-async function onFile() {
-  const f = $('#fl').files[0]; $('#fl').value = ''; noLock = false;
-  if (!f) return;
-  if (f.size > 50 * 1024 * 1024) return toast('File too big (max 50 MB)');
-  const type = f.type.startsWith('video') ? 'video' : 'image';
-  await sendMedia(await shrink(f), type, onceNext);
+/* sending */
+async function sendMsg(o) {
+  const row = { id: crypto.randomUUID(), sender_id: me.id, receiver_id: T.pid, type: 'text', reply_to: replyTo ? replyTo.id : null, ...o };
+  const local = { ...row, created_at: new Date().toISOString(), reactions: {}, deleted_for: [], _pending: true };
+  T.msgs.push(local); cache.set(local.id, local); clearReply(); renderMsgs();
+  return await pushMsg(local, row);
 }
-async function shrink(file) {
+async function pushMsg(local, row) {
+  const { data, error } = await sb.from('messages').insert(row).select().single();
+  if (error) { local._pending = false; local._failed = true; toast(/blocked|policy/i.test(error.message) ? "Can't send this message" : 'Not sent — tap to retry'); renderMsgs(); return false; }
+  Object.assign(local, data); delete local._pending; delete local._failed; cache.set(local.id, local); renderMsgs(); return true;
+}
+function retrySend(m) { const { _failed, _pending, created_at, ...row } = m; m._failed = false; m._pending = true; renderMsgs(); pushMsg(m, { id: m.id, sender_id: m.sender_id, receiver_id: m.receiver_id, type: m.type, body: m.body, media_path: m.media_path, view_once: m.view_once, reply_to: m.reply_to }); }
+function attachMenu() {
+  menuSheet([['image', 'Photo / Video from gallery', () => pickFile({ accept: 'image/*,video/*' })], ['camera', 'Camera photo', () => pickFile({ accept: 'image/*', capture: 'environment' })], ['video', 'Camera video', () => pickFile({ accept: 'video/*', capture: 'environment' })], ['clock', 'One-time photo / video', () => pickFile({ accept: 'image/*,video/*', once: true })]]);
+}
+function pickFile({ accept, capture, once = false, mode = 'chat' }) {
+  holdLock(); const i = document.createElement('input'); i.type = 'file'; i.accept = accept; if (capture) i.setAttribute('capture', capture);
+  i.onchange = async () => {
+    noLock = false; const f = i.files[0]; if (!f) return;
+    if (mode === 'avatar') return setAvatar(f);
+    if (f.size > 50 * 1024 * 1024) return toast('File too big (max 50 MB)');
+    const file = await shrink(f);
+    if (mode === 'status') return mediaPreview(file, { allowOnce: false, onSend: cap => postStatusMedia(file, cap) });
+    mediaPreview(file, { once, allowOnce: true, onSend: (cap, one) => sendMedia(file, file.type.startsWith('video') ? 'video' : 'image', one, cap) });
+  };
+  i.click();
+}
+async function shrink(file, max = 1600) {
   if (!file.type.startsWith('image/') || file.type === 'image/gif') return file;
   try {
-    const bmp = await createImageBitmap(file);
-    const s = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
-    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-    return await new Promise(r => c.toBlob(b => r(b || file), 'image/jpeg', .82));
+    const bmp = await createImageBitmap(file); const s = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s); c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    return await new Promise(r => c.toBlob(b => r(b ? new File([b], 'p.jpg', { type: 'image/jpeg' }) : file), 'image/jpeg', .82));
   } catch (e) { return file; }
 }
-async function sendMedia(file, type, once) {
-  const ct = (file.type || 'application/octet-stream').split(';')[0];
-  const ext = (ct.split('/')[1] || 'bin').replace('quicktime', 'mov').replace('x-m4a', 'm4a').replace('mpeg', 'mp3');
-  const path = `${me.id}/${Date.now()}_${Math.random().toString(36).slice(2, 7)}.${ext}`;
-  toast('Sending…');
-  const { error } = await sb.storage.from('media').upload(path, file, { contentType: ct });
-  if (error) return toast('Upload failed: ' + error.message);
-  if (await insertMsg({ type, media_path: path, view_once: !!once })) toast('Sent ✅');
+function mediaPreview(file, { once = false, allowOnce = true, onSend }) {
+  const url = URL.createObjectURL(file), isV = file.type.startsWith('video');
+  const m = document.createElement('div'); m.className = 'modal'; m.style.zIndex = 80;
+  m.innerHTML = `<div class="chead" style="background:#000;color:#fff;border:0"><button class="ib" id="pvx" style="color:#fff">${ic('x', 24)}</button></div><div class="pv">${isV ? `<video src="${url}" controls playsinline></video>` : `<img src="${url}">`}</div><div class="pvb"><input class="inp" id="pvc" placeholder="Add a caption…">${allowOnce ? `<button class="once-t ${once ? 'on' : ''}" id="pvo"><span class="oc" style="width:20px;height:20px;font-size:11px">1</span>Once</button>` : ''}<button class="fab" id="pvs">${ic('send', 20)}</button></div>`;
+  document.body.appendChild(m); const close = () => { rmOv(close); m.remove(); URL.revokeObjectURL(url); }; addOv(close);
+  $('#pvx', m).onclick = close; const o = $('#pvo', m); if (o) o.onclick = () => { once = !once; o.classList.toggle('on', once); };
+  $('#pvs', m).onclick = () => { const cap = $('#pvc', m).value.trim(); close(); onSend(cap, once); };
 }
+async function sendMedia(file, type, once, cap = '') {
+  const ct = (file.type || 'application/octet-stream').split(';')[0], ext = (ct.split('/')[1] || 'bin').replace('quicktime', 'mov').replace('x-m4a', 'm4a').replace('mpeg', 'mp3');
+  const path = `${me.id}/${Date.now()}_${Math.random().toString(36).slice(2, 7)}.${ext}`;
+  const row = { id: crypto.randomUUID(), sender_id: me.id, receiver_id: T.pid, type, media_path: path, view_once: !!once, body: cap || null, reply_to: replyTo ? replyTo.id : null };
+  const local = { ...row, created_at: new Date().toISOString(), reactions: {}, deleted_for: [], _pending: true, _blob: URL.createObjectURL(file) };
+  T.msgs.push(local); cache.set(local.id, local); clearReply(); renderMsgs();
+  const { error } = await sb.storage.from('media').upload(path, file, { contentType: ct });
+  if (error) { local._pending = false; local._failed = true; renderMsgs(); return toast('Upload failed'); }
+  await pushMsg(local, row);
+}
+/* voice */
+let rec = null;
 async function startRec() {
   try {
-    noLock = true;
-    const st = await navigator.mediaDevices.getUserMedia({ audio: true });
+    holdLock(); const st = await navigator.mediaDevices.getUserMedia({ audio: true });
     const mt = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg'].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || '';
-    const mr = new MediaRecorder(st, mt ? { mimeType: mt } : {});
-    const chunks = [];
+    const mr = new MediaRecorder(st, mt ? { mimeType: mt } : {}); const chunks = [];
     mr.ondataavailable = e => e.data.size && chunks.push(e.data);
-    rec = { mr, st, chunks, start: Date.now(), mt: mr.mimeType };
-    rec.timer = setInterval(() => { const s = Math.floor((Date.now() - rec.start) / 1000); $('#rtm').textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }, 250);
-    mr.start();
-    $('#comp').classList.add('hidden'); $('#recbar').classList.remove('hidden'); $('#emoji').classList.add('hidden');
+    rec = { mr, st, chunks, start: Date.now(), mt: mr.mimeType, pid: T.pid };
+    rec.timer = setInterval(() => { const t = $('#rt'); if (t) t.textContent = fmtDur((Date.now() - rec.start) / 1000); sendTyping(true, 'voice'); }, 1000);
+    mr.start(); $('#comp').classList.add('hidden'); $('#recbar').classList.remove('hidden'); closePanel && closePanel();
   } catch (e) { toast('Allow microphone to send voice 🎤'); }
-  setTimeout(() => { noLock = false; }, 500);
 }
 function stopRec(send) {
-  if (!rec) return;
-  const r = rec, dur = Date.now() - r.start; rec = null;
-  clearInterval(r.timer);
+  if (!rec) return; const r = rec, dur = (Date.now() - r.start) / 1000; rec = null; clearInterval(r.timer); sendTyping(false);
   r.mr.onstop = async () => {
     r.st.getTracks().forEach(t => t.stop());
-    if (send) {
-      if (dur < 800) toast('Too short');
-      else await sendMedia(new Blob(r.chunks, { type: r.mt || 'audio/webm' }), 'voice', false);
-    }
+    if (send) { if (dur < 1) return toast('Hold a bit longer'); const f = new File([new Blob(r.chunks, { type: r.mt || 'audio/webm' })], 'v', { type: (r.mt || 'audio/webm').split(';')[0] }); await sendMedia(f, 'voice', false, String(Math.round(dur))); }
   };
-  r.mr.stop();
-  $('#recbar').classList.add('hidden'); $('#comp').classList.remove('hidden'); $('#rtm').textContent = '0:00';
+  r.mr.stop(); const rb = $('#recbar'); if (rb) rb.classList.add('hidden'); const c = $('#comp'); if (c) c.classList.remove('hidden'); const t = $('#rt'); if (t) t.textContent = '0:00';
+}
+const audios = new Map();
+async function togglePlay(m) {
+  const vp = () => $(`.mrow[data-id="${m.id}"] .vp`);
+  let st = audios.get(m.id);
+  if (!st) {
+    const url = m._blob || await mediaUrl(m.media_path); if (!url) return toast('Could not load audio');
+    const a = new Audio(url); st = { a }; audios.set(m.id, st);
+    a.ontimeupdate = () => { const v = vp(); if (!v) return; const p = a.duration && isFinite(a.duration) ? a.currentTime / a.duration : a.currentTime / (+m.body || 1); $('.vpt i', v).style.width = Math.min(100, p * 100) + '%'; $('.vpd', v).textContent = fmtDur(a.currentTime); };
+    a.onended = () => { const v = vp(); if (v) { $('.vpb', v).innerHTML = ic('play', 18); $('.vpt i', v).style.width = '0'; $('.vpd', v).textContent = fmtDur(+m.body || 0); } };
+    a.onpause = () => { const v = vp(); if (v) $('.vpb', v).innerHTML = ic('play', 18); };
+    a.onplay = () => { audios.forEach(s => { if (s.a !== a) s.a.pause(); }); const v = vp(); if (v) $('.vpb', v).innerHTML = ic('pause', 18); };
+  }
+  if (st.a.paused) st.a.play(); else st.a.pause();
+}
+async function openViewer(m) {
+  if (m.deleted_at || !m.media_path) return;
+  const url = await mediaUrl(m.media_path); if (!url) return toast('Could not load media');
+  const v = document.createElement('div'); v.className = 'viewer';
+  v.innerHTML = `<div class="vtop"><button class="ib" data-a="x">${ic('back', 24)}</button><span>${esc(nameOf(m.sender_id))}</span><div><button class="ib" data-a="save">${ic('download', 22)}</button><button class="ib" data-a="share">${ic('share', 22)}</button></div></div>${m.type === 'video' ? `<video src="${url}" controls autoplay playsinline></video>` : `<img src="${url}">`}${m.body ? `<div class="vcap">${esc(m.body)}</div>` : ''}`;
+  document.body.appendChild(v); const close = () => { rmOv(close); v.remove(); }; addOv(close);
+  v.onclick = e => { const b = e.target.closest('[data-a]'); if (!b) return; if (b.dataset.a === 'x') close(); if (b.dataset.a === 'save') saveMedia(m, false); if (b.dataset.a === 'share') saveMedia(m, true); };
+}
+async function openOnce(m) {
+  if (m.viewed || m.sender_id === me.id) return;
+  const url = await mediaUrl(m.media_path, 600); if (!url) return toast('Could not open');
+  const { error } = await sb.from('messages').update({ viewed: true }).eq('id', m.id); if (error) return toast('Could not open');
+  m.viewed = true; renderMsgs();
+  const v = document.createElement('div'); v.className = 'viewer';
+  v.innerHTML = `<div class="vtop"><button class="ib" data-a="x">${ic('x', 24)}</button><span>One-time · closes forever</span><span></span></div>${m.type === 'video' ? `<video src="${url}" controls autoplay playsinline></video>` : `<img src="${url}">`}${m.body ? `<div class="vcap">${esc(m.body)}</div>` : ''}`;
+  document.body.appendChild(v); const close = () => { rmOv(close); v.remove(); }; addOv(close); v.onclick = e => { if (e.target.closest('[data-a]')) close(); };
+}
+/* search in chat */
+function openSearch() {
+  const o = document.createElement('div'); o.className = 'searchov'; o.innerHTML = `<div class="chead"><button class="ib" id="sx">${ic('back', 24)}</button><input id="sq" placeholder="Search in chat" style="flex:1;padding:10px 4px;font-size:16px"></div><div class="sres" id="sr"><div class="empty">Type to search messages</div></div>`;
+  $('#app').appendChild(o); const close = () => { rmOv(close); o.remove(); }; addOv(close); $('#sx', o).onclick = close; const q = $('#sq', o); q.focus();
+  let tm; q.oninput = () => { clearTimeout(tm); tm = setTimeout(async () => {
+    const s = q.value.trim(); if (s.length < 2) return $('#sr', o).innerHTML = '<div class="empty">Type to search messages</div>';
+    const pid = T.pid; const { data } = await sb.from('messages').select('*').or(`and(sender_id.eq.${me.id},receiver_id.eq.${pid}),and(sender_id.eq.${pid},receiver_id.eq.${me.id})`).ilike('body', '%' + s.replace(/[%_]/g, '') + '%').is('deleted_at', null).order('created_at', { ascending: false }).limit(40);
+    const rows = (data || []).filter(m => !hiddenForMe(m)); rows.forEach(m => cache.set(m.id, m));
+    const re = new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig');
+    $('#sr', o).innerHTML = rows.length ? rows.map(m => `<button class="item" data-id="${m.id}"><div class="mid"><b style="font-size:13px;color:var(--mut)">${esc(nameOf(m.sender_id))} · ${dayLabel(m.created_at)} ${tmFmt(m.created_at)}</b><small>${esc(m.body).replace(re, x => `<mark>${x}</mark>`)}</small></div></button>`).join('') : '<div class="empty">No messages found</div>';
+  }, 300); };
+  $('#sr', o).onclick = e => { const b = e.target.closest('[data-id]'); if (b) { const id = b.dataset.id; close(); gotoMsg(id); } };
+}
+/* emoji / stickers / gif */
+const EMO = { Smileys: '😀😃😄😁😆😅😂🤣🥲😊😇🙂😉😌😍🥰😘😋😛😜🤪🤨🧐🤓😎🥳😏😒😞😔😟😕🙁😣😖😫😩🥺😢😭😤😠😡🤬🤯😳🥵🥶😱😨😰😥🤗🤔🫣🤭🤫😶😐😑😬🙄😯😮😲🥱😴🤤😵🤐🥴🤢🤮🤧😷🤒🤑🤠😈💩👻💀👽🤖🎃😺😹😻🙈🙉🙊', Hands: '👍👎👌✌️🤞🤟🤘🤙👈👉👆👇☝️✋👋🤝🙏💪🫶👏🙌🤲✍️💅🤳', Hearts: '💋💌💘💝💖💗💓💞💕💔❤️🧡💛💚💙💜🤎🖤🤍💯💢💥💫💦💨', Fun: '🔥✨🌟⭐🎉🎊🎈🎁🏆🥇🎮🎵🎶🎤🎧⚽🏏🏀🚀✈️🏍️🚗🌈☀️🌙⚡❄️', Food: '🍕🍔🍟🌭🍿🍩🍪🍫🍭☕🍺🥂🍻🍎🍌🍉🍓🥭🍦🎂', Animals: '🐶🐱🐼🐯🦁🐸🐵🦄🐔🐧🦋🐢🐍🦖' };
+const seg = s => window.Intl && Intl.Segmenter ? [...new Intl.Segmenter().segment(s)].map(x => x.segment) : Array.from(s);
+const emojiGrid = () => Object.entries(EMO).map(([k, v]) => `<div class="egh">${k}</div><div class="eg">${seg(v).map(e => `<button data-em="${e}">${e}</button>`).join('')}</div>`).join('');
+function emojiSheet(cb) { const s = sheet(`<div style="max-height:60dvh;overflow-y:auto">${emojiGrid()}</div>`); s.addEventListener('click', e => { const b = e.target.closest('[data-em]'); if (b) { s.close(); cb(b.dataset.em); } }); }
+const STK = [['😂', 'LOL', 'a'], ['😱', 'OMG!', 'b'], ['🤝', 'Bhai!', 'c'], ['🎉', 'Party!', 'd'], ['🥺', 'Please', 'e'], ['💞', 'Miss you', 'f'], ['🌙', 'Good night', 'a'], ['☀️', 'Good morning', 'b'], ['🍕', 'Bhukh lagi', 'c'], ['☕', 'Chai?', 'd'], ['🙏', 'Thanks', 'e'], ['👏', 'Wah wah', 'f'], ['😡', 'Gussa!', 'a'], ['🤯', 'Mind blown', 'b'], ['😴', 'Neend aa rahi', 'c'], ['🏃', 'Aa raha hu', 'd'], ['🔥', 'Fire', 'e'], ['🫶', 'Love u', 'f'], ['🤣', 'Hass hass', 'a'], ['😎', 'Boss', 'b'], ['🤡', 'Pagal', 'c'], ['💀', 'Dead', 'd'], ['🥳', 'Mubarak', 'e'], ['🙈', 'Sharam', 'f']];
+function togglePanel() {
+  const p = $('#panel'); if (p.classList.contains('open')) return closePanel && closePanel();
+  p.classList.add('open'); panelTab('emoji');
+  panelClose = () => { p.classList.remove('open'); rmOv(panelClose); panelClose = null; }; addOv(panelClose);
+}
+function panelTab(t) {
+  const p = $('#panel');
+  p.innerHTML = `<div class="ptabs">${[['emoji', 'Emoji'], ['stk', 'Stickers'], ['gif', 'GIF']].map(x => `<button data-t="${x[0]}" class="${t === x[0] ? 'on' : ''}">${x[1]}</button>`).join('')}</div><div class="pbody" id="pb"></div>`;
+  const pb = $('#pb');
+  if (t === 'emoji') pb.innerHTML = emojiGrid();
+  else if (t === 'stk') pb.innerHTML = `<div class="sg">${STK.map((s, i) => `<button class="stk s-${s[2]}" data-s="${i}"><span class="se">${s[0]}</span><b>${s[1]}</b></button>`).join('')}</div>`;
+  else gifTab(pb);
+  p.onclick = e => {
+    const tb = e.target.closest('[data-t]'); if (tb) return panelTab(tb.dataset.t);
+    const em = e.target.closest('[data-em]'); if (em) { const i = $('#inp'); const s = i.selectionStart ?? i.value.length; i.value = i.value.slice(0, s) + em.dataset.em + i.value.slice(i.selectionEnd ?? s); i.selectionStart = i.selectionEnd = s + em.dataset.em.length; i.oninput(); return; }
+    const st = e.target.closest('[data-s]'); if (st) { const s = STK[+st.dataset.s]; closePanel(); sendMsg({ type: 'sticker', body: s.join('|') }); return; }
+    const g = e.target.closest('[data-gif]'); if (g) { closePanel(); sendMsg({ type: 'gif', body: g.dataset.gif }); return; }
+  };
+}
+function gifTab(pb) {
+  if (!CFG.GIPHY_KEY) { pb.innerHTML = `<div class="empty" style="padding:30px 10px"><div class="em">🎞️</div>GIF search needs a free Giphy key.<br><small>Add it in config.js (GIPHY_KEY). You can still send any GIF from your gallery with 📎.</small></div>`; return; }
+  pb.innerHTML = `<div class="search" style="margin:0 0 8px">${ic('search', 18)}<input id="gq" placeholder="Search GIFs"></div><div class="gg" id="gr"></div>`;
+  const load = async q => { try { const u = q ? `https://api.giphy.com/v1/gifs/search?api_key=${CFG.GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=24&rating=pg-13` : `https://api.giphy.com/v1/gifs/trending?api_key=${CFG.GIPHY_KEY}&limit=24&rating=pg-13`; const r = await (await fetch(u)).json(); $('#gr').innerHTML = (r.data || []).map(g => `<img src="${g.images.fixed_height_small.url}" data-gif="${g.images.fixed_height.url}" loading="lazy">`).join(''); } catch (e) { $('#gr').innerHTML = '<div class="empty">Could not load GIFs</div>'; } };
+  load(''); let tm; $('#gq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => load(e.target.value.trim()), 400); };
 }
 
-/* tap handlers in chat */
-document.addEventListener('click', async e => {
-  if (view !== 'chat') return;
-  const once = e.target.closest('[data-once]');
-  if (once) {
-    const m = msgs.find(x => x.id === once.dataset.once); if (!m || m.viewed) return;
-    const u = await mediaUrl(m.media_path, 600); if (!u) return toast('Could not open');
-    const { error } = await sb.from('messages').update({ viewed: true }).eq('id', m.id);
-    if (!error) { m.viewed = true; renderMsgs(); }
-    const v = $('#viewer'); v.className = '';
-    v.innerHTML = `${m.type === 'video' ? `<video src="${u}" controls autoplay playsinline></video>` : `<img src="${u}" alt="">`}<button class="x">✕</button><div class="tag">① One-time · closes forever</div>`;
-    v.onclick = ev => { if (ev.target.closest('.x') || ev.target === v) { v.className = 'hidden'; v.innerHTML = ''; } };
-    return;
+/* ---------- status ---------- */
+const SBG = ['linear-gradient(135deg,#ff8a5c,#ff4f86)', 'linear-gradient(135deg,#7f7fff,#45c4ff)', 'linear-gradient(135deg,#12c79a,#6be8a3)', 'linear-gradient(135deg,#a56cff,#ff7ad9)', 'linear-gradient(135deg,#f6d365,#fda085)', 'linear-gradient(135deg,#232526,#414345)'];
+function fillStatus(body) {
+  const g = new Map(); statuses.forEach(s => { if (!g.has(s.user_id)) g.set(s.user_id, []); g.get(s.user_id).push(s); });
+  const mine = g.get(me.id) || []; g.delete(me.id);
+  const row = (p, list, own) => { const un = list.some(s => !seenSt.has(s.id)); return `<button class="item" data-st="${p.id}"><div class="ring ${un || own ? '' : 'seen'}"><div>${avatar(p, 48)}</div></div><div class="mid"><b>${own ? 'My status' : esc(p.name)}</b><small>${list.length} update${list.length > 1 ? 's' : ''} · ${tmFmt(list[list.length - 1].created_at)}</small></div></button>`; };
+  body.innerHTML = `${mine.length ? row(profile, mine, true) : `<button class="item" data-addst="1"><div style="position:relative">${avatar(profile, 54)}<span style="position:absolute;right:-2px;bottom:-2px;background:var(--pri);color:#fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;border:2px solid var(--surf)">${ic('plus', 13)}</span></div><div class="mid"><b>My status</b><small>Tap to add status update</small></div></button>`}${mine.length ? `<button class="item" data-addst="1"><div class="av" style="width:54px;height:54px;background:var(--surf2);color:var(--pri)">${ic('plus', 24)}</div><div class="mid"><b>Add another</b></div></button>` : ''}<div class="sec">Recent updates</div>${g.size ? [...g.entries()].map(([uid, l]) => { const p = people.get(uid); return p ? row(p, l, false) : ''; }).join('') : '<div class="empty" style="padding:30px"><div class="em">🫧</div>No updates yet. Be the first!</div>'}`;
+}
+function addStatusMenu() { menuSheet([['type', 'Text status', textStatus], ['image', 'Photo / Video status', () => pickFile({ accept: 'image/*,video/*', mode: 'status' })]]); }
+function textStatus() {
+  let bg = 0; const m = document.createElement('div'); m.className = 'modal'; m.style.zIndex = 80; m.style.background = SBG[0];
+  m.innerHTML = `<div class="chead" style="background:none;border:0;color:#fff"><button class="ib" id="tx" style="color:#fff">${ic('x', 24)}</button></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:20px"><textarea id="tt" placeholder="Type a status" maxlength="200" style="width:100%;text-align:center;font-size:28px;font-weight:800;color:#fff;resize:none;height:60%"></textarea></div><div class="swatch">${SBG.map((b, i) => `<i data-b="${i}" class="${i === 0 ? 'on' : ''}" style="background:${b}"></i>`).join('')}<span style="flex:1"></span><button class="fab" id="tp">${ic('send', 20)}</button></div>`;
+  document.body.appendChild(m); const close = () => { rmOv(close); m.remove(); }; addOv(close);
+  $('#tx', m).onclick = close; m.addEventListener('click', e => { const b = e.target.closest('[data-b]'); if (b) { bg = +b.dataset.b; m.style.background = SBG[bg]; $$('.swatch i', m).forEach(i => i.classList.toggle('on', i === b)); } });
+  $('#tp', m).onclick = async () => { const t = $('#tt', m).value.trim(); if (!t) return; const { error } = await sb.from('statuses').insert({ user_id: me.id, kind: 'text', body: t, bg: String(bg) }); if (error) return toast('Could not post'); close(); await loadStatuses(); fillHome(); toast('Status posted 🎉'); };
+}
+async function postStatusMedia(file, cap) {
+  const ct = file.type.split(';')[0], ext = (ct.split('/')[1] || 'bin').replace('quicktime', 'mov'); const path = `${me.id}/s_${Date.now()}.${ext}`;
+  toast('Posting…'); const { error } = await sb.storage.from('media').upload(path, file, { contentType: ct }); if (error) return toast('Upload failed');
+  const { error: e2 } = await sb.from('statuses').insert({ user_id: me.id, kind: ct.startsWith('video') ? 'video' : 'image', media_path: path, body: cap || null }); if (e2) return toast('Could not post');
+  await loadStatuses(); if (route.v === 'home') fillHome(); toast('Status posted 🎉');
+}
+async function openStatus(uid) {
+  const list = statuses.filter(s => s.user_id === uid); if (!list.length) return; const own = uid === me.id; const p = people.get(uid) || profile;
+  let i = Math.max(0, list.findIndex(s => !seenSt.has(s.id))); if (own) i = 0; let timer = null;
+  const el = document.createElement('div'); el.className = 'sv'; document.body.appendChild(el);
+  const close = () => { clearTimeout(timer); rmOv(close); el.remove(); if (route.v === 'home') fillHome(); }; addOv(close);
+  async function show() {
+    clearTimeout(timer); const s = list[i]; if (!s) return close();
+    if (!own && !seenSt.has(s.id)) { seenSt.add(s.id); sb.from('status_views').insert({ status_id: s.id, viewer_id: me.id }).then(() => {}); }
+    let content = '', dur = 5000;
+    if (s.kind === 'text') { el.style.background = SBG[+s.bg || 0]; content = `<div class="st">${esc(s.body)}</div>`; }
+    else { el.style.background = '#111'; const u = await mediaUrl(s.media_path); content = s.kind === 'video' ? `<video src="${u}" autoplay playsinline></video>` : `<img src="${u}">`; }
+    el.innerHTML = `<div class="bars">${list.map((x, k) => `<i><b style="width:${k < i ? 100 : 0}%"></b></i>`).join('')}</div><div class="sh">${avatar(p, 36)}<div style="flex:1"><b>${own ? 'My status' : esc(p.name)}</b><div style="font-size:12px;opacity:.8">${tmFmt(s.created_at)}</div></div>${own ? `<button class="ib" id="sdel" style="color:#fff">${ic('trash', 21)}</button>` : ''}<button class="ib" id="scl" style="color:#fff">${ic('x', 24)}</button></div><div class="sc">${content}<div class="zl"></div><div class="zr"></div></div><div class="sf">${s.kind !== 'text' && s.body ? esc(s.body) : ''}<div id="svw" style="opacity:.85;margin-top:6px"></div></div>`;
+    const bar = $('.bars i:nth-child(' + (i + 1) + ') b', el); requestAnimationFrame(() => { bar.style.transition = `width ${dur}ms linear`; bar.style.width = '100%'; });
+    const v = $('video', el); if (v) { v.onloadedmetadata = () => { dur = (v.duration || 5) * 1000; bar.style.transition = `width ${dur}ms linear`; }; v.onended = next; } else timer = setTimeout(next, dur);
+    $('#scl', el).onclick = close; $('.zr', el).onclick = next; $('.zl', el).onclick = prev;
+    if (own) { $('#sdel', el).onclick = async () => { await sb.from('statuses').delete().eq('id', s.id); if (s.media_path) sb.storage.from('media').remove([s.media_path]); statuses = statuses.filter(x => x.id !== s.id); list.splice(i, 1); if (i >= list.length) i = list.length - 1; if (!list.length) return close(); show(); }; const { data } = await sb.from('status_views').select('viewer_id').eq('status_id', s.id); const w = $('#svw', el); if (w) w.innerHTML = `${ic('eye', 16)} Seen by ${(data || []).length}${(data || []).length ? ': ' + (data || []).map(r => esc(nameOf(r.viewer_id))).join(', ') : ''}`; }
   }
-  const img = e.target.closest('img[data-view]');
-  if (img) {
-    const v = $('#viewer'); v.className = '';
-    v.innerHTML = `<img src="${img.src}" alt=""><button class="x">✕</button>`;
-    v.onclick = ev => { if (ev.target.closest('.x') || ev.target === v) { v.className = 'hidden'; v.innerHTML = ''; } };
-  }
-});
-/* long press = delete my message */
-(() => {
-  let tm;
-  const start = e => {
-    const r = e.target.closest('.row.me'); if (!r || view !== 'chat') return;
-    tm = setTimeout(async () => {
-      const m = msgs.find(x => x.id === r.dataset.id); if (!m) return;
-      if (confirm('Delete this message?')) {
-        const { error } = await sb.from('messages').delete().eq('id', m.id);
-        if (error) return toast('Could not delete');
-        if (m.media_path) sb.storage.from('media').remove([m.media_path]);
-        msgs = msgs.filter(x => x.id !== m.id); renderMsgs(true);
-      }
-    }, 650);
-  };
-  const stop = () => clearTimeout(tm);
-  document.addEventListener('touchstart', start, { passive: true });
-  document.addEventListener('touchend', stop); document.addEventListener('touchmove', stop);
-})();
+  function next() { if (i < list.length - 1) { i++; show(); } else close(); }
+  function prev() { if (i > 0) { i--; show(); } }
+  show();
+}
 
-/* ---------------- SETTINGS ---------------- */
-function renderSettings() {
-  view = 'settings';
-  const isOwner = profile.role === 'owner';
+/* ---------- settings ---------- */
+function rSettings() {
+  const wall = ls.get('buddy_wp', 'default'); const pref = ls.get('buddy_theme', 'system');
   $('#app').onclick = null;
-  $('#app').innerHTML = `<div class="top"><button class="ic" id="sback">‹</button><b style="font-family:'Baloo 2';font-size:20px">Settings</b><span style="width:40px"></span></div>
-  <div class="body">
-    <div class="card"><div class="row">${avatar(profile, 'noDot')}<div class="mid"><b>${esc(profile.name)}</b><small>${esc(profile.email)}${isOwner ? ' · Owner 👑' : ''}</small></div></div><div style="height:10px"></div><input class="inp" id="nm" value="${esc(profile.name)}" maxlength="30" placeholder="Your name"></div>
-    <div class="sec">Privacy</div>
-    <div class="set"><div>Show online status<small>Others can see when you're online</small></div><label class="sw"><input type="checkbox" id="p1" ${profile.show_online ? 'checked' : ''}><i></i></label></div>
-    <div class="set"><div>Show last seen<small>Others can see when you were last here</small></div><label class="sw"><input type="checkbox" id="p2" ${profile.show_last_seen ? 'checked' : ''}><i></i></label></div>
-    <div class="sec">App lock</div>
-    <div class="set"><div>PIN lock<small>${hasPin() ? 'On · asks PIN every time you open the app' : 'Off'}</small></div><div style="display:flex;gap:8px"><button class="btn sm" id="pinset">${hasPin() ? 'Change' : 'Set PIN'}</button>${hasPin() ? '<button class="btn alt sm" id="pinoff">Remove</button>' : ''}</div></div>
-    <div class="sec">Chat wallpaper</div>
-    <div class="wps">${WALLS.map(w => `<button class="wp ${getWall().id === w.id ? 'sel' : ''}" data-wp="${w.id}" style="background:${w.bg};background-size:${w.size}">${esc(w.n)}</button>`).join('')}</div>
-    <div class="sec">Account</div>
-    <button class="btn no" id="lo" style="width:100%">Log out</button>
-    <p style="text-align:center;color:var(--mut);font-size:12px;margin:18px 0">Buddy's App 🎈 made for friends</p>
-  </div>`;
-  $('#sback').onclick = () => { if (isOwner) { cur ? openChat(cur) : renderOwner(); } else openChat(owner); };
-  $('#nm').onchange = async e => { const v = e.target.value.trim(); if (!v) return; await sb.from('profiles').update({ name: v }).eq('id', me.id); profile.name = v; toast('Name saved'); };
-  $('#p1').onchange = e => savePriv({ show_online: e.target.checked });
-  $('#p2').onchange = e => savePriv({ show_last_seen: e.target.checked });
-  $('#pinset').onclick = setPinFlow;
-  if ($('#pinoff')) $('#pinoff').onclick = removePinFlow;
-  $('#lo').onclick = () => { if (confirm('Log out?')) logout(); };
-  document.querySelector('.wps').onclick = e => { const b = e.target.closest('[data-wp]'); if (!b) return; localStorage.setItem('buddy_wp', b.dataset.wp); renderSettings(); toast('Wallpaper changed 🎨'); };
+  $('#app').innerHTML = `<div class="top"><button class="ib" id="sb">${ic('back', 24)}</button><b style="font-weight:800;font-size:18px">Settings</b><span style="width:42px"></span></div><div class="body">
+  <button class="item" id="spr" style="padding:14px 18px">${avatar(profile, 64)}<div class="mid"><b style="font-size:18px">${esc(profile.name)}</b><small>${esc(profile.about || '')}</small></div>${ic('chev', 20)}</button>
+  <div class="sec">Privacy</div>
+  <div class="set"><span class="ico">${ic('eye', 20)}</span><div class="mid"><b>Online status</b><small>Show when you are online</small></div><label class="sw"><input type="checkbox" id="p1" ${profile.show_online ? 'checked' : ''}><i></i></label></div>
+  <div class="set"><span class="ico">${ic('clock', 20)}</span><div class="mid"><b>Last seen</b><small>Show when you were last here</small></div><label class="sw"><input type="checkbox" id="p2" ${profile.show_last_seen ? 'checked' : ''}><i></i></label></div>
+  <button class="set" id="sbl"><span class="ico">${ic('block', 20)}</span><div class="mid"><b>Blocked buddies</b><small>${blocked.size} blocked</small></div>${ic('chev', 18)}</button>
+  <div class="sec">Security</div>
+  <div class="set"><span class="ico">${ic('lock', 20)}</span><div class="mid"><b>PIN lock</b><small>${hasPin() ? 'On · locks right when you leave the app' : 'Off'}</small></div><button class="btn sm" id="pinset">${hasPin() ? 'Change' : 'Set PIN'}</button>${hasPin() ? '<button class="btn alt sm" id="pinoff">Remove</button>' : ''}</div>
+  ${hasPin() ? `<div class="set"><span class="ico">${ic('finger', 20)}</span><div class="mid"><b>Fingerprint / face unlock</b><small>Uses the biometrics saved on your phone</small></div><label class="sw"><input type="checkbox" id="fpt" ${hasFp() ? 'checked' : ''}><i></i></label></div>` : ''}
+  <div class="sec">Appearance</div>
+  <div class="seg" id="thm">${[['system', 'Auto'], ['light', 'Light'], ['dark', 'Dark']].map(t => `<button data-t="${t[0]}" class="${pref === t[0] ? 'on' : ''}">${t[1]}</button>`).join('')}</div>
+  <button class="set" id="swp"><span class="ico">${ic('image', 20)}</span><div class="mid"><b>Chat wallpaper</b><small>Pick a style or use a photo from your gallery</small></div>${ic('chev', 18)}</button>
+  <div class="sec">Account</div>
+  <button class="set" id="slo"><span class="ico" style="color:#e5365f">${ic('out', 20)}</span><div class="mid"><b style="color:#e5365f">Log out</b></div></button>
+  <p style="text-align:center;color:var(--mut);font-size:12px;margin:20px 0">Buddy's App 🎈 v2</p></div>`;
+  $('#sb').onclick = goBack; $('#spr').onclick = () => nav('profile'); $('#sbl').onclick = () => nav('blocked'); $('#swp').onclick = () => nav('wall');
+  $('#p1').onchange = e => savePriv({ show_online: e.target.checked }); $('#p2').onchange = e => savePriv({ show_last_seen: e.target.checked });
+  $('#pinset').onclick = setPinFlow; const po = $('#pinoff'); if (po) po.onclick = removePinFlow;
+  const fpt = $('#fpt'); if (fpt) fpt.onchange = async e => { if (e.target.checked) { const ok = await fpEnable(); if (!ok) { e.target.checked = false; toast('Could not set up fingerprint on this phone'); } else toast('Fingerprint unlock on 👆'); } else { ls.del(FP_KEY); toast('Fingerprint unlock off'); } };
+  $('#thm').onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; ls.set('buddy_theme', b.dataset.t); applyTheme(); rSettings(); };
+  $('#slo').onclick = () => ask('Log out?', 'You will need to sign in with Google again.', 'Log out', logout);
 }
-async function savePriv(o) {
-  const { error } = await sb.from('profiles').update(o).eq('id', me.id);
-  if (error) return toast('Error: ' + error.message);
-  Object.assign(profile, o); toast('Saved ✅');
+async function savePriv(o) { const { error } = await sb.from('profiles').update(o).eq('id', me.id); if (error) return toast('Error: ' + error.message); Object.assign(profile, o); toast('Saved ✅'); }
+function rProfile() {
+  $('#app').onclick = null;
+  $('#app').innerHTML = `<div class="top"><button class="ib" id="sb">${ic('back', 24)}</button><b style="font-weight:800;font-size:18px">Profile</b><span style="width:42px"></span></div><div class="body"><div style="display:flex;justify-content:center;padding:24px 0 8px"><button id="avb" style="position:relative">${avatar(profile, 120)}<span style="position:absolute;right:2px;bottom:2px;background:var(--pri);color:#fff;border-radius:50%;width:38px;height:38px;display:grid;place-items:center;border:3px solid var(--bg)">${ic('camera', 18)}</span></button></div><div class="sec">Name</div><div class="card"><input class="inp" id="pn" maxlength="30" value="${esc(profile.name)}"></div><div class="sec">About</div><div class="card"><input class="inp" id="pa" maxlength="80" value="${esc(profile.about || '')}"></div><div class="row2" style="margin:14px 14px"><button class="btn" id="psv">Save</button></div></div>`;
+  $('#sb').onclick = goBack;
+  $('#avb').onclick = () => pickFile({ accept: 'image/*', mode: 'avatar' });
+  $('#psv').onclick = async () => { const name = $('#pn').value.trim(), about = $('#pa').value.trim(); if (!name) return toast('Name required'); const { error } = await sb.from('profiles').update({ name, about }).eq('id', me.id); if (error) return toast('Error'); profile.name = name; profile.about = about; toast('Saved ✅'); goBack(); };
+}
+async function setAvatar(file) {
+  try {
+    const bmp = await createImageBitmap(file); const s = Math.min(bmp.width, bmp.height); const c = document.createElement('canvas'); c.width = c.height = 480;
+    c.getContext('2d').drawImage(bmp, (bmp.width - s) / 2, (bmp.height - s) / 2, s, s, 0, 0, 480, 480);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .85)); const path = `${me.id}/${Date.now()}.jpg`;
+    toast('Uploading…'); const { error } = await sb.storage.from('avatars').upload(path, blob, { contentType: 'image/jpeg' }); if (error) return toast('Upload failed');
+    const url = sb.storage.from('avatars').getPublicUrl(path).data.publicUrl; await sb.from('profiles').update({ avatar_url: url }).eq('id', me.id); profile.avatar_url = url; toast('Photo updated 📸'); if (route.v === 'profile') rProfile();
+  } catch (e) { toast('Could not use this photo'); }
+}
+const WALLS = [
+  { id: 'default', n: 'Clean', css: 'var(--chatbg)' },
+  { id: 'doodle', n: 'Doodles', css: `url("data:image/svg+xml,${encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><text x='12' y='42' font-size='26' opacity='.16'>🎈</text><text x='100' y='74' font-size='24' opacity='.16'>🎮</text><text x='34' y='136' font-size='26' opacity='.16'>🍕</text><text x='116' y='164' font-size='24' opacity='.16'>✨</text></svg>")}"), var(--chatbg)`, size: '180px 180px, auto' },
+  { id: 'peach', n: 'Peach', css: 'linear-gradient(160deg,#ffd7c2,#ffc2d6)' },
+  { id: 'sky', n: 'Sky', css: 'linear-gradient(160deg,#cfe8ff,#e4d9ff)' },
+  { id: 'mint', n: 'Mint', css: 'linear-gradient(160deg,#c9f5e4,#d9f0ff)' },
+  { id: 'night', n: 'Night', css: 'linear-gradient(160deg,#1a1440,#3a1c5e)' },
+  { id: 'sunset', n: 'Sunset', css: 'linear-gradient(160deg,#3a1c71,#d76d77,#ffaf7b)' },
+  { id: 'ocean', n: 'Ocean', css: 'linear-gradient(170deg,#0f2027,#203a43,#2c5364)' }
+];
+function applyWall(el) {
+  const id = ls.get('buddy_wp', 'default');
+  if (id === 'custom' && ls.get('buddy_wp_img', '')) { el.style.background = `url(${ls.get('buddy_wp_img', '')}) center/cover`; return; }
+  const w = WALLS.find(x => x.id === id) || WALLS[0]; el.style.background = w.css; el.style.backgroundSize = w.size || 'cover';
+}
+function rWall() {
+  const cur = ls.get('buddy_wp', 'default');
+  $('#app').onclick = null;
+  $('#app').innerHTML = `<div class="top"><button class="ib" id="sb">${ic('back', 24)}</button><b style="font-weight:800;font-size:18px">Wallpaper</b><span style="width:42px"></span></div><div class="body"><button class="set" id="wg"><span class="ico">${ic('image', 20)}</span><div class="mid"><b>Choose from gallery</b><small>Use your own photo as chat wallpaper</small></div></button><div class="wps" id="wps">${WALLS.map(w => `<button class="wp ${cur === w.id ? 'sel' : ''}" data-w="${w.id}" style="background:${w.css};background-size:${w.size || 'cover'}">${w.n}</button>`).join('')}${ls.get('buddy_wp_img', '') ? `<button class="wp ${cur === 'custom' ? 'sel' : ''}" data-w="custom" style="background:url(${ls.get('buddy_wp_img', '')}) center/cover">My photo</button>` : ''}</div></div>`;
+  $('#sb').onclick = goBack;
+  $('#wps').onclick = e => { const b = e.target.closest('[data-w]'); if (!b) return; ls.set('buddy_wp', b.dataset.w); rWall(); toast('Wallpaper set 🎨'); };
+  $('#wg').onclick = () => { holdLock(); const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = async () => { noLock = false; const f = i.files[0]; if (!f) return; const s = await shrink(f, 1100); const r = new FileReader(); r.onload = () => { ls.set('buddy_wp_img', r.result); ls.set('buddy_wp', 'custom'); rWall(); toast('Wallpaper set 🎨'); }; r.readAsDataURL(s); }; i.click(); };
+}
+function rBlocked() {
+  const list = [...blocked].map(id => people.get(id)).filter(Boolean);
+  $('#app').onclick = null;
+  $('#app').innerHTML = `<div class="top"><button class="ib" id="sb">${ic('back', 24)}</button><b style="font-weight:800;font-size:18px">Blocked buddies</b><span style="width:42px"></span></div><div class="body">${list.length ? list.map(p => `<div class="item">${avatar(p, 48)}<div class="mid"><b>${esc(p.name)}</b></div><button class="btn alt sm" data-ub="${p.id}">Unblock</button></div>`).join('') : '<div class="empty"><div class="em">✅</div>No blocked buddies.</div>'}</div>`;
+  $('#sb').onclick = goBack; $('.body').onclick = e => { const b = e.target.closest('[data-ub]'); if (b) unblock(b.dataset.ub); };
 }
 
-sb.auth.onAuthStateChange(ev => { if (ev === 'SIGNED_OUT' && me) location.href = location.pathname; });
 init();
 </script>
 </body>
