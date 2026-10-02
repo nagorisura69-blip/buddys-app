@@ -14,6 +14,13 @@ jobs:
           keytool -genkeypair -keystore buddy.keystore -storepass buddy1234 -keypass buddy1234 -alias buddy -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Buddys App"
           "$BT/apksigner" sign --ks buddy.keystore --ks-pass pass:buddy1234 --key-pass pass:buddy1234 --out Buddys-App-signed.apk aligned.apk
           "$BT/apksigner" verify -v Buddys-App-signed.apk
+          PKG=$("$BT/aapt2" dump badging aligned.apk | sed -n "s/^package: name='\([^']*\)'.*/\1/p")
+          FP=$(keytool -list -v -keystore buddy.keystore -storepass buddy1234 | grep "SHA256:" | awk '{print $2}')
+          printf '[{\n  "relation": ["delegate_permission/common.handle_all_urls"],\n  "target": {\n    "namespace": "android_app",\n    "package_name": "%s",\n    "sha256_cert_fingerprints": ["%s"]\n  }\n}]\n' "$PKG" "$FP" > assetlinks.json
+          echo '### Copy this into assetlinks.json' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat assetlinks.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
           name: signed-apk
