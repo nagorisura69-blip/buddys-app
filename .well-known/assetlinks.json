@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.buddys.app",
+    "sha256_cert_fingerprints": ["1C:CF:32:9C:5E:65:45:E4:6D:E2:F8:77:56:3A:B1:59:B9:1E:DD:4F:94:29:F2:30:54:64:C7:AE:00:04:94:DC"]
+  }
+}]
