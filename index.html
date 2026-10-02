@@ -179,6 +179,7 @@ code.l{display:block;word-break:break-all;background:var(--surf2);border-radius:
 <div id="lock" class="hidden"></div>
 <div id="toast" class="hidden"></div>
 <script src="config.js"></script>
+<script src="push.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const CFG = window.BUDDY_CONFIG;
@@ -464,8 +465,14 @@ function lastFor(pid) { let best = null; cache.forEach(m => { if (partnerOf(m) !
 async function startApp() {
   await Promise.all([loadPeople(), loadMeta(), loadBlocks(), loadStatuses()]);
   subscribe(); startPresence();
+  BuddyPush.resync(sb); setTimeout(askNotif, 2500);
   history.replaceState({ base: 1 }, ''); history.pushState({ v: 'home', p: {} }, '');
   route = { v: 'home', p: {} }; render();
+}
+async function askNotif() {
+  if (!BuddyPush.supported() || Notification.permission !== 'default' || ls.get('buddy_notif_asked', '')) return;
+  ls.set('buddy_notif_asked', '1');
+  ask('Turn on notifications? 🔔', 'Get a notification when a buddy messages you, even when the app is closed.', 'Turn on', async () => { const r = await BuddyPush.enable(sb); toast(r === 'on' ? 'Notifications on 🔔' : 'Notifications not enabled'); });
 }
 async function resync() { if (!me) return; await Promise.all([loadPeople(), loadMeta(), loadBlocks(), loadStatuses()]); if (route.v === 'home') fillHome(); if (route.v === 'chat' && T) { T.more = true; T.msgs = []; await loadOlder(true); } }
 
@@ -1001,6 +1008,9 @@ function rSettings() {
   <div class="set"><span class="ico">${ic('eye', 20)}</span><div class="mid"><b>Online status</b><small>Show when you are online</small></div><label class="sw"><input type="checkbox" id="p1" ${profile.show_online ? 'checked' : ''}><i></i></label></div>
   <div class="set"><span class="ico">${ic('clock', 20)}</span><div class="mid"><b>Last seen</b><small>Show when you were last here</small></div><label class="sw"><input type="checkbox" id="p2" ${profile.show_last_seen ? 'checked' : ''}><i></i></label></div>
   <button class="set" id="sbl"><span class="ico">${ic('block', 20)}</span><div class="mid"><b>Blocked buddies</b><small>${blocked.size} blocked</small></div>${ic('chev', 18)}</button>
+  <div class="sec">App</div>
+  <div class="set"><span class="ico">🔔</span><div class="mid"><b>Notifications</b><small id="nsub">Checking…</small></div><label class="sw"><input type="checkbox" id="ntg"><i></i></label></div>
+  ${BuddyPush.standalone() ? '' : `<button class="set" id="sins"><span class="ico">${ic('download', 20)}</span><div class="mid"><b>Install app</b><small>Add Buddy's App to your home screen</small></div>${ic('chev', 18)}</button>`}
   <div class="sec">Security</div>
   <div class="set"><span class="ico">${ic('lock', 20)}</span><div class="mid"><b>PIN lock</b><small>${hasPin() ? 'On · locks right when you leave the app' : 'Off'}</small></div><button class="btn sm" id="pinset">${hasPin() ? 'Change' : 'Set PIN'}</button>${hasPin() ? '<button class="btn alt sm" id="pinoff">Remove</button>' : ''}</div>
   ${hasPin() ? `<div class="set"><span class="ico">${ic('finger', 20)}</span><div class="mid"><b>Fingerprint / face unlock</b><small>Uses the biometrics saved on your phone</small></div><label class="sw"><input type="checkbox" id="fpt" ${hasFp() ? 'checked' : ''}><i></i></label></div>` : ''}
@@ -1012,6 +1022,9 @@ function rSettings() {
   <p style="text-align:center;color:var(--mut);font-size:12px;margin:20px 0">Buddy's App 🎈 v2</p></div>`;
   $('#sb').onclick = goBack; $('#spr').onclick = () => nav('profile'); $('#sbl').onclick = () => nav('blocked'); $('#swp').onclick = () => nav('wall');
   $('#p1').onchange = e => savePriv({ show_online: e.target.checked }); $('#p2').onchange = e => savePriv({ show_last_seen: e.target.checked });
+  BuddyPush.status().then(st => { const t = $('#ntg'), n = $('#nsub'); if (!t) return; t.checked = st === 'on'; n.textContent = { on: 'On', off: 'Off', denied: 'Blocked in phone settings', unsupported: 'Not available on this phone/browser' }[st]; if (st === 'unsupported' || st === 'denied') t.disabled = true; });
+  $('#ntg').onchange = async e => { if (e.target.checked) { const r = await BuddyPush.enable(sb); e.target.checked = r === 'on'; $('#nsub').textContent = r === 'on' ? 'On' : 'Off'; toast(r === 'on' ? 'Notifications on 🔔' : 'Could not turn on'); } else { await BuddyPush.disable(sb); $('#nsub').textContent = 'Off'; toast('Notifications off'); } };
+  const sins = $('#sins'); if (sins) sins.onclick = async () => { if (BuddyPush.canInstall()) await BuddyPush.install(); else toast('Chrome menu (⋮) → Add to Home screen / Install app'); };
   $('#pinset').onclick = setPinFlow; const po = $('#pinoff'); if (po) po.onclick = removePinFlow;
   const fpt = $('#fpt'); if (fpt) fpt.onchange = async e => { if (e.target.checked) { const ok = await fpEnable(); if (!ok) { e.target.checked = false; toast('Could not set up fingerprint on this phone'); } else toast('Fingerprint unlock on 👆'); } else { ls.del(FP_KEY); toast('Fingerprint unlock off'); } };
   $('#thm').onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; ls.set('buddy_theme', b.dataset.t); applyTheme(); rSettings(); };
