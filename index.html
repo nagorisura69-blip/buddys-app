@@ -451,6 +451,13 @@ async function loadMeta() {
   const und = (data || []).filter(m => m.receiver_id === me.id && !m.delivered_at).map(m => m.id);
   if (und.length) sb.from('messages').update({ delivered_at: new Date().toISOString() }).in('id', und).then(() => {});
 }
+async function markRead() {
+  if (!T || !me) return; const pid = T.pid, now = new Date().toISOString();
+  const mark = m => { if (m.sender_id === pid && m.receiver_id === me.id && !m.read_at) m.read_at = now; };
+  cache.forEach(mark); (T.msgs || []).forEach(mark); unread.set(pid, 0);
+  const { error } = await sb.from('messages').update({ read_at: now }).eq('sender_id', pid).eq('receiver_id', me.id).is('read_at', null);
+  if (error) console.warn('markRead', error.message);
+}
 async function loadBlocks() { const { data } = await sb.from('blocks').select('blocked').eq('blocker', me.id); blocked = new Set((data || []).map(r => r.blocked)); }
 async function loadStatuses() {
   const since = new Date(Date.now() - 864e5).toISOString();
@@ -1079,5 +1086,6 @@ function rBlocked() {
 
 init();
 </script>
+<script src="extras.js"></script>
 </body>
 </html>
